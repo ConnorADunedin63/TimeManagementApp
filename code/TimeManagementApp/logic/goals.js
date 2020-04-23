@@ -29,6 +29,7 @@ export async function getGoals() {
       return [];
     }
   } catch(e) {
+    console.log("The following error occured while retrieving goals...");
     console.log(e);
   }
 }
@@ -39,8 +40,6 @@ export async function getGoals() {
 export async function setGoals(name, description, date) {
   // Gets the current goals =
   var currentGoals = await getGoals();
-  console.log("Test length");
-  console.log(currentGoals.length);
 
   // key is required for the home screen as each list item should have a unique key
   const newGoal = {
@@ -57,6 +56,20 @@ export async function setGoals(name, description, date) {
     await AsyncStorage.setItem('@goals', JSON.stringify(currentGoals));
   }
   catch(e) {
+    console.log("The following error occured while setting goals...");
     console.log(e);
   }
+}
+
+/**
+  Clears all goals and replaces the value with an empty array
+*/
+export async function clearGoals() {
+    try {
+      await AsyncStorage.setItem('@goals', JSON.stringify([]))
+    }
+    catch(e) {
+      console.log("The following error occured while clearing goals...");
+      console.log(e);
+    }
 }

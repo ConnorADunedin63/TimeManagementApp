@@ -9,7 +9,8 @@ import {
   StatusBar,
   Image,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 
 import {
@@ -23,7 +24,7 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { getGoals } from '../logic/goals.js';
+import { getGoals, clearGoals } from '../logic/goals.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,12 +32,6 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     backgroundColor: '#20639B'
-  },
-  sectionTitle: {
-    marginLeft: 10,
-    fontSize: 32,
-    textDecorationLine: 'underline',
-    color: 'white'
   },
   quoteContainer: {
     flex: 1,
@@ -53,8 +48,19 @@ const styles = StyleSheet.create({
      flex: 4,
      alignItems: 'stretch'
   },
+  sectionHeader: {
+    flex: 0.5,
+    flexDirection: 'row',
+    alignItems: 'flex-start'
+  },
+  sectionTitle: {
+    marginLeft: 10,
+    fontSize: 32,
+    textDecorationLine: 'underline',
+    color: 'white'
+  },
   tableContainer: {
-    flex: 1,
+    flex: 3,
     marginLeft: 10,
     marginRight: 20,
   },
@@ -107,13 +113,30 @@ export default function HomeScreen({ navigation }) {
         {quote(quoteExpanded, expandQuote)}
         <View style={quoteExpanded == false ? {flex: 8} : {flex: 2}}>
           <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Goals</Text>
+            <View style={styles.sectionHeader}>
+              <View style={{ flex: 1, alignItems: 'flex-start'}}>
+                <Text style={styles.sectionTitle}>Goals</Text>
+              </View>
+              <View style={{ flex: 1, alignItems: 'flex-end', marginRight: 20, marginTop: 5}}>
+                <Button title='Clear Goals' color='red'
+                onPress={() => {
+                  Alert.alert(
+                    'Clear all goals?',
+                    'Are you sure you wish to clear all goals?',
+                    [
+                      {text: 'No'},
+                      {text: 'Yes', onPress: () => { clearGoals(); alert("Goals Cleared!") }}
+                    ]
+                  )
+                }}></Button>
+              </View>
+            </View>
             <ScrollView style={styles.tableContainer}>
               <View style={styles.sectionTable}>
                 {goalsTable()}
               </View>
             </ScrollView>
-            <View style={{flex: 0.25, alignItems: "center", marginTop: 10}}>
+            <View style={{flex: 0.5, alignItems: "center", marginTop: 10}}>
               <Button title="Create Goal" onPress={() => {navigation.navigate('Create Goal')}}></Button>
             </View>
           </View>
@@ -146,7 +169,7 @@ function goalsTable() {
   if(goals === null) {
     return(
       <View style={styles.tableRowEmpty}>
-        <Text>No Items to Display</Text>
+        <Text>Loading...</Text>
       </View>
     )
   }
@@ -188,7 +211,7 @@ function goalsTable() {
   else {
     return(
       <View style={styles.tableRowEmpty}>
-        <Text>Loading...</Text>
+        <Text>No Items to Display</Text>
       </View>
     );
   }
