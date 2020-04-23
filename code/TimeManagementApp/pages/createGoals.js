@@ -76,11 +76,13 @@ export default function createGoal({ navigation }) {
         <Text style={styles.sectionTitle}>Create Goal</Text>
       </View>
       <View style={styles.formContainer}>
-        <TextInput style={styles.formInput} placeholder="Name" onChangeText={text => setName(text)}></TextInput>
-        <TextInput style={styles.formInput} placeholder="Description" onChangeText={text => setDescription(text)}></TextInput>
+        <TextInput style={styles.formInput} placeholder="Name (required)" onChangeText={text => setName(text)}></TextInput>
+        <TextInput style={styles.formInput} placeholder="Description (optional)" onChangeText={text => setDescription(text)}></TextInput>
         {datePicker(date, setDate)}
         <View style={styles.createContainer}>
-          <Button title="Create Goal" onPress={() => {setGoals(name, description, date); navigation.navigate('Home')}}></Button>
+          <Button title="Create Goal"
+          onPress={() => {setGoals(name, description, date); navigation.navigate('Home')}}
+          disabled={name === '' ? true : false }></Button>
         </View>
       </View>
 
@@ -142,10 +144,10 @@ function datePicker(date, setDate) {
         <TextInput placeholder={"Date: " + date.getHours() + ": " + date.getMinutes() + " " + days[date.getDay()] + ", " + date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()} style={styles.formDateInput} editable={false} selectTextOnFocus={false}></TextInput>
       </View>
       <View style={styles.timeBtn}>
-        <Button onPress={showDatepicker} title="Show date picker!" />
+        <Button onPress={showDatepicker} title="Select Date" />
       </View>
       <View style={styles.timeBtn}>
-        <Button onPress={showTimepicker} title="Show time picker!" />
+        <Button onPress={showTimepicker} title="Select Time" />
       </View>
       {show && (
         <DateTimePicker
