@@ -25,6 +25,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { getGoals, clearGoals } from '../logic/goals.js';
+import { convertTo12HourFormat } from '../helpers/timeHelper.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -163,6 +164,7 @@ function goalsTable() {
     setGoalState();
   }, [goals]);
 
+  // This is a temporary loading screen while the goals are loaded from asynchronous storage
   if(goals === null) {
     return(
       <ScrollView style={styles.tableContainer}>
@@ -196,7 +198,7 @@ function goalsTable() {
                       <Text>{item.name}</Text>
                     </View>
                     <View style={styles.rowItem}>
-                      <Text>{item.date.getHours() + ": " + item.date.getMinutes()}</Text>
+                      <Text>{convertTo12HourFormat(item.date)}</Text>
                       <Text>{item.date.getDate() + "/" + item.date.getMonth() + "/" + item.date.getFullYear()}</Text>
                     </View>
                   </View>
@@ -208,6 +210,7 @@ function goalsTable() {
       </>
     );
   }
+  // No goals are present
   else {
     return(
       <ScrollView style={styles.tableContainer}>
