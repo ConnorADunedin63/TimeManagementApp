@@ -76,3 +76,61 @@ export function formatDate(date) {
     return "N/A";
   }
 }
+
+/**
+  Returns the day of the week
+  param date: The Date object that should be used
+  returns String: Day of the week, for example Monday or N/A if the date object is not valid
+*/
+export function getDayOfWeek(date) {
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ]
+
+  // If the date is a valid Date object
+  if(date instanceof Date) {
+    return days[date.getDay()];
+  }
+  // If the date is not a valid Date object
+  else {
+    return "N/A";
+  }
+}
+
+/**
+  Returns the month
+  param date: The Date object that should be used
+  returns String: Month for example January or N/A if the date object is not valid
+*/
+export function getMonth(date) {
+  const months = [
+      "January",
+      "Febuary",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+  ];
+
+  // If the date is a valid Date object
+  if(date instanceof Date) {
+    // Return the month
+    return months[date.getMonth()];
+  }
+  // If the date is not a valid Date object
+  else {
+    return "N/A";
+  }
+}

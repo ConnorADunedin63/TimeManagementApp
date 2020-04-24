@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Button,
   SafeAreaView,
-  StyleSheet,
   ScrollView,
   View,
   Text,
@@ -20,50 +19,13 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+// Import stylesheet
+import styles from './css/createGoalsStyles.js';
+
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
 import { setGoals } from '../logic/goals.js';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    backgroundColor: '#20639B'
-  },
-  sectionTitleContainer: {
-    alignItems: 'center',
-  },
-  sectionTitle: {
-    fontSize: 32,
-    textDecorationLine: 'underline',
-    color: 'white'
-  },
-  sectionContainer: {
-     flex: 4,
-     alignItems: 'stretch'
-  },
-  formContainer: {
-    flex: 1,
-    marginLeft: 10,
-    marginRight: 20,
-  },
-  formInput: {
-    marginTop: 10,
-    backgroundColor: '#D3D3D3'
-  },
-  formDateInput: {
-    marginTop: 10,
-    backgroundColor: 'white'
-  },
-  timeBtn: {
-    marginTop: 5
-  },
-  createContainer: {
-    marginTop: 40
-  }
-});
-
+import { getDayOfWeek, convertTo12HourFormat, getMonth } from '../helpers/timeHelper.js';
 
 export default function createGoal({ navigation }) {
   const [name, setName] = useState('');
@@ -85,7 +47,6 @@ export default function createGoal({ navigation }) {
           disabled={name === '' ? true : false }></Button>
         </View>
       </View>
-
     </View>
   );
 }
@@ -113,35 +74,12 @@ function datePicker(date, setDate) {
       showMode('time');
     };
 
-    const days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ]
 
-    const months = [
-        "January",
-        "Febuary",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    ]
 
     return (
     <View>
       <View>
-        <TextInput placeholder={"Date: " + date.getHours() + ": " + date.getMinutes() + " " + days[date.getDay()] + ", " + date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()} style={styles.formDateInput} editable={false} selectTextOnFocus={false}></TextInput>
+        <TextInput placeholder={"Date: " + convertTo12HourFormat(date) + " " + getDayOfWeek(date) + ", " + date.getDate() + " " + getMonth(date) + " " + date.getFullYear()} style={styles.formDateInput} editable={false} selectTextOnFocus={false}></TextInput>
       </View>
       <View style={styles.timeBtn}>
         <Button onPress={showDatepicker} title="Select Date" />
