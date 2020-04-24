@@ -7,10 +7,10 @@
   param datetime: The Date object that should be used
   return String: The time of the Date in 12 hour format
 */
-export function convertTo12HourFormat(datetime) {
-  if(datetime instanceof Date) {
-    let hours = datetime.getHours();
-    let minutes = datetime.getMinutes();
+export function convertTo12HourFormat(date) {
+  if(date instanceof Date) {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
     let pm = false
 
     // Convert hours to 12 hour format
@@ -45,5 +45,34 @@ export function convertTo12HourFormat(datetime) {
   else {
     console.log("datetime is not a Date object");
     return 'N/A';
+  }
+}
+
+/**
+  Formats the date in the form dd/mm/yyyy
+  params date: the Date object that should be used
+  return String: a String in the form dd/mm/yyyy
+*/
+export function formatDate(date) {
+  // If the date is an instanceof Date
+  if(date instanceof Date) {
+    // Gets the day of the month
+    // Month start at 0 so we need to add 1 to get the correct date
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    if(day < 10) {
+      day = "0" + day;
+    }
+    if(month < 10) {
+      month = "0" + month;
+    }
+
+    return day + "/" + month + "/" + year;
+  }
+  // If date is not a valid Date object
+  else {
+    return "N/A";
   }
 }
