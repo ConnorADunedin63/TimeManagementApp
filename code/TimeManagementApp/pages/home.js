@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
   quoteContainer: {
     flex: 1,
     backgroundColor: 'black',
-    alignItems: 'flex-start'
+    alignItems: 'stretch',
+    paddingLeft: 10,
+    paddingRight: 10
   },
   quote: {
-    marginLeft: 10,
     color: 'white',
     fontStyle: 'italic',
     fontSize: 16
@@ -131,11 +132,7 @@ export default function HomeScreen({ navigation }) {
                 }}></Button>
               </View>
             </View>
-            <ScrollView style={styles.tableContainer}>
-              <View style={styles.sectionTable}>
-                {goalsTable()}
-              </View>
-            </ScrollView>
+            {goalsTable()}
             <View style={{flex: 0.5, alignItems: "center", marginTop: 10}}>
               <Button title="Create Goal" onPress={() => {navigation.navigate('Create Goal')}}></Button>
             </View>
@@ -168,51 +165,58 @@ function goalsTable() {
 
   if(goals === null) {
     return(
-      <View style={styles.tableRowEmpty}>
-        <Text>Loading...</Text>
-      </View>
+      <ScrollView style={styles.tableContainer}>
+        <View style={styles.sectionTable}>
+          <View style={styles.tableRowEmpty}>
+            <Text>Loading...</Text>
+          </View>
+        </View>
+      </ScrollView>
     )
   }
   else if(goals.length > 0) {
     return(
       <>
-        <View style={styles.tableHeader}>
-          <View style={styles.rowItem}>
-            <Text>Name</Text>
-          </View>
-          <View style={styles.rowItem}>
-            <Text>Description</Text>
-          </View>
-          <View style={styles.rowItem}>
-            <Text>Due Date</Text>
-          </View>
-        </View>
-        {
-          goals.map((item) => {
-            return (
-              <View style={item.key % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd} key={item.key}>
-                <View style={styles.rowItem}>
-                  <Text>{item.name}</Text>
-                </View>
-                <View style={styles.rowItem}>
-                  <Text>{item.description}</Text>
-                </View>
-                <View style={styles.rowItem}>
-                  <Text>{item.date.getHours() + ": " + item.date.getMinutes()}</Text>
-                  <Text>{item.date.getDate() + "/" + item.date.getMonth() + "/" + item.date.getFullYear()}</Text>
-                </View>
+        <Text style={{marginLeft: 10, color: 'white'}}>Click to goal to view</Text>
+        <ScrollView style={styles.tableContainer}>
+          <View style={styles.sectionTable}>
+            <View style={styles.tableHeader}>
+              <View style={styles.rowItem}>
+                <Text>Name</Text>
               </View>
-            );
-          })
-        }
+              <View style={styles.rowItem}>
+                <Text>Due Date</Text>
+              </View>
+            </View>
+            {
+              goals.map((item) => {
+                return (
+                  <View style={item.key % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd} key={item.key}>
+                    <View style={styles.rowItem}>
+                      <Text>{item.name}</Text>
+                    </View>
+                    <View style={styles.rowItem}>
+                      <Text>{item.date.getHours() + ": " + item.date.getMinutes()}</Text>
+                      <Text>{item.date.getDate() + "/" + item.date.getMonth() + "/" + item.date.getFullYear()}</Text>
+                    </View>
+                  </View>
+                );
+              })
+            }
+          </View>
+        </ScrollView>
       </>
     );
   }
   else {
     return(
-      <View style={styles.tableRowEmpty}>
-        <Text>No Items to Display</Text>
-      </View>
+      <ScrollView style={styles.tableContainer}>
+        <View style={styles.sectionTable}>
+          <View style={styles.tableRowEmpty}>
+            <Text>No Goals to Display</Text>
+          </View>
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -245,6 +249,7 @@ function quote(expanded, setExpanded) {
   return(
     <TouchableOpacity style={styles.quoteContainer} onPress={() => {setExpanded(!expanded)}}>
       <Text style={styles.quote}>{expanded ? quotes[0][1] : quotes[0][0]}</Text>
+      <Text style={{color: 'white', alignSelf: 'flex-end', marginTop: 10}}>Click to {expanded ? 'minimise' : 'expand'}</Text>
     </TouchableOpacity>
   )
 }
