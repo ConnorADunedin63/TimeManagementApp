@@ -1,4 +1,4 @@
-import { convertTo12HourFormat, formatDate } from '../../helpers/timeHelper.js'
+import { convertTo12HourFormat, formatDate, longTermGoals } from '../../helpers/timeHelper.js'
 /**
   Tests for checking date formatting functions
 */
@@ -50,4 +50,71 @@ describe("date format", () => {
   it("should be N/A when date is null", () => {
     expect(formatDate(null)).toBe("N/A");
   });
+});
+
+describe("long term goals filter", () => {
+    it("should return nothing when there are no goals.", () => {
+      const goals = [];
+      expect(longTermGoals(goals).length).toBe(0);
+    });
+
+    it("should return nothing when there is only short term goals.", () => {
+      // Constructs dates for the goals
+      const goalDate1 = new Date();
+      goalDate1.setDate(goalDate1.getDate() + 1);
+      const goalDate2 = new Date();
+      goalDate2.setDate(goalDate2.getDate() + 2);
+      const goalDate3 = new Date();
+      goalDate3.setDate(goalDate3.getDate() + 3);
+
+      const goals = [
+        {
+          name: 'Test Goal 1',
+          description: '',
+          date: goalDate1
+        },
+        {
+          name: 'Test Goal 2',
+          description: '',
+          date: goalDate2
+        },
+        {
+          name: 'Test Goal 3',
+          description: '',
+          date: goalDate3
+        }
+      ];
+
+      expect(longTermGoals(goals).length).toBe(0);
+    });
+
+    it("should return one goal when there is one long term goal six months in the future", () => {
+      // Constructs dates for the goals
+      const goalDate1 = new Date();
+      goalDate1.setMonth(goalDate1.getMonth() + 6);
+      const goalDate2 = new Date();
+      goalDate2.setDate(goalDate2.getDate() + 2);
+      const goalDate3 = new Date();
+      goalDate3.setDate(goalDate3.getDate() + 3);
+
+      const goals = [
+        {
+          name: 'Long term goal',
+          description: '',
+          date: goalDate1
+        },
+        {
+          name: 'Test Goal 2',
+          description: '',
+          date: goalDate2
+        },
+        {
+          name: 'Test Goal 3',
+          description: '',
+          date: goalDate3
+        }
+      ];
+
+      expect(longTermGoals(goals).length).toBe(0);
+    });
 });

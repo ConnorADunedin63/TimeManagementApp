@@ -134,3 +134,37 @@ export function getMonth(date) {
     return "N/A";
   }
 }
+
+
+/**
+  Returns only the long term goals from the original list, a long term goal is anything
+  longer than three months away. Note this function does not calculate partial months.
+  param: the list of goals that should be filtered
+  return array: An array of JSON goal objects from the original
+*/
+export function longTermGoals(goals) {
+  const currentDate = new Date();
+
+  let longTermGoals = goals.map((goal) => {
+      const goalDate = goal.date;
+      // Calculate the difference in months
+      let diffMonths = 0;
+      // Long term goals should be in the future
+      if(goalDate > currentDate) {
+        // If goal is in another year, it is long term
+        if(goalDate.getFullYear() > currentDate.getFullYear()) {
+          return goal;
+        }
+        // Goal is in the same year
+        else {
+          // Calculate the month difference
+          diffMonths += (goalDate.getMonth() - currentDate.getMonth()) + 1;
+          // If the goal is more than three months away, it is long term
+          if(diffMonths > 3) {
+            return goal;
+          }
+        }
+      }
+  });
+  return longTermGoals;
+}
