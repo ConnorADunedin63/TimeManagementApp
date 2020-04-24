@@ -30,7 +30,7 @@ import { getDayOfWeek, convertTo12HourFormat, getMonth } from '../helpers/timeHe
 export default function createGoal({ navigation }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
 
   return (
     <View style={styles.container}>
