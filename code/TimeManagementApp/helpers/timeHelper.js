@@ -218,6 +218,11 @@ export function getShortTermGoals(goals) {
   return longTermGoals;
 }
 
+/**
+  Returns goals that do not have a set end date.
+  param goals: The goals that should be filtered
+  return Array: An array of JSON objects
+*/
 export function getOngoingGoals(goals) {
   let ongoingGoals = goals.filter((goal) => {
     if(goal.date === "N/A") {

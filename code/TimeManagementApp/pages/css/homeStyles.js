@@ -7,18 +7,6 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     backgroundColor: '#20639B'
   },
-  quoteContainer: {
-    flex: 1,
-    backgroundColor: 'black',
-    alignItems: 'stretch',
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  quote: {
-    color: 'white',
-    fontStyle: 'italic',
-    fontSize: 16
-  },
   sectionContainer: {
      flex: 4,
      alignItems: 'stretch'

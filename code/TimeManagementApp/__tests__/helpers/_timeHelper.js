@@ -1,4 +1,4 @@
-import { convertTo12HourFormat, formatDate, longTermGoals } from '../../helpers/timeHelper.js'
+import { convertTo12HourFormat, formatDate, getLongTermGoals, getShortTermGoals, } from '../../helpers/timeHelper.js'
 /**
   Tests for checking date formatting functions
 */
@@ -55,7 +55,7 @@ describe("date format", () => {
 describe("long term goals filter", () => {
     it("should return nothing when there are no goals.", () => {
       const goals = [];
-      expect(longTermGoals(goals).length).toBe(0);
+      expect(getLongTermGoals(goals).length).toBe(0);
     });
 
     it("should return nothing when there is only short term goals.", () => {
@@ -85,7 +85,7 @@ describe("long term goals filter", () => {
         }
       ];
 
-      expect(longTermGoals(goals).length).toBe(0);
+      expect(getLongTermGoals(goals).length).toBe(0);
     });
 
     it("should return one goal when there is one long term goal six months in the future", () => {
@@ -115,7 +115,7 @@ describe("long term goals filter", () => {
         }
       ];
 
-      expect(longTermGoals(goals).length).toBe(1);
+      expect(getLongTermGoals(goals).length).toBe(1);
     });
 
     it("should return one goal when there are twp long term goals six months and a year in the future", () => {
@@ -145,6 +145,97 @@ describe("long term goals filter", () => {
         }
       ];
 
-      expect(longTermGoals(goals).length).toBe(2);
+      expect(getLongTermGoals(goals).length).toBe(2);
     });
+});
+
+describe("short term filter", () => {
+  it("should return an empty array when there are no goals", () => {
+    const goals = [];
+    expect(getShortTermGoals(goals).length).toBe(0);
+  });
+
+  it("should return an empty array when there are only long term or ongoing goals", () => {
+    const goalDate1 = new Date();
+    goalDate1.setFullYear(goalDate1.getFullYear() + 1);
+    const goalDate2 = "N/A";
+    const goalDate3 = new Date();
+    goalDate3.setFullYear(goalDate3.getFullYear() + 5);
+
+    const goals = [
+      {
+        name: 'Test Goal 1',
+        description: '',
+        date: goalDate1
+      },
+      {
+        name: 'Test Goal 2',
+        description: '',
+        date: goalDate2
+      },
+      {
+        name: 'Test Goal 3',
+        description: '',
+        date: goalDate3
+      }
+    ];
+
+    expect(getShortTermGoals(goals).length).toBe(0);
+  });
+
+  it("should return one goal when there is a single short term goal.", () => {
+    const goalDate1 = new Date();
+    goalDate1.setFullYear(goalDate1.getFullYear() + 1);
+    const goalDate2 = "N/A";
+    const goalDate3 = new Date();
+    goalDate3.setDate(goalDate3.getDate() + 1);
+
+    const goals = [
+      {
+        name: 'Test Goal 1',
+        description: '',
+        date: goalDate1
+      },
+      {
+        name: 'Test Goal 2',
+        description: '',
+        date: goalDate2
+      },
+      {
+        name: 'Test Goal 3',
+        description: '',
+        date: goalDate3
+      }
+    ];
+
+    expect(getShortTermGoals(goals).length).toBe(1);
+  });
+
+  it("should return two goals when there are two short term goals.", () => {
+    const goalDate1 = new Date();
+    goalDate1.setMinutes(goalDate1.getMinutes() + 1);
+    const goalDate2 = "N/A";
+    const goalDate3 = new Date();
+    goalDate3.setDate(goalDate3.getDate() + 1);
+
+    const goals = [
+      {
+        name: 'Test Goal 1',
+        description: '',
+        date: goalDate1
+      },
+      {
+        name: 'Test Goal 2',
+        description: '',
+        date: goalDate2
+      },
+      {
+        name: 'Test Goal 3',
+        description: '',
+        date: goalDate3
+      }
+    ];
+
+    expect(getShortTermGoals(goals).length).toBe(2);
+  });
 });
