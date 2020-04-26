@@ -77,31 +77,35 @@ export default function HomeScreen({ navigation }) {
 */
 function goalsTable() {
   const [goals, setGoals] = useState(null);
+  const [filter, setFilter] = useState('Long Term');
   useEffect(() => {
     async function setGoalState() {
-      let currentGoals = await getGoals();
+      let currentGoals = await getGoals(filter);
       await setGoals(currentGoals);
     }
 
     setGoalState();
-  }, [goals]);
+  }, [goals, filter]);
 
   // This is a temporary loading screen while the goals are loaded from asynchronous storage
   if(goals === null) {
     return(
-      <ScrollView style={styles.tableContainer}>
-        <View style={styles.sectionTable}>
-          <View style={styles.tableRowEmpty}>
-            <Text>Loading...</Text>
+      <>
+        {filterDetails(filter)}
+        <ScrollView style={styles.tableContainer}>
+          <View style={styles.sectionTable}>
+            <View style={styles.tableRowEmpty}>
+              <Text>Loading...</Text>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </>
     )
   }
   else if(goals.length > 0) {
     return(
       <>
-        <Text style={{marginLeft: 10, color: 'white'}}>Click to goal to view</Text>
+        {filterDetails(filter)}
         <ScrollView style={styles.tableContainer}>
           <View style={styles.sectionTable}>
             <View style={styles.tableHeader}>
@@ -129,21 +133,42 @@ function goalsTable() {
             }
           </View>
         </ScrollView>
-      </>
+    </>
     );
   }
   // No goals are present
   else {
     return(
-      <ScrollView style={styles.tableContainer}>
-        <View style={styles.sectionTable}>
-          <View style={styles.tableRowEmpty}>
-            <Text>No Goals to Display</Text>
+      <>
+        {filterDetails(filter)}
+        <ScrollView style={styles.tableContainer}>
+          <View style={styles.sectionTable}>
+            <View style={styles.tableRowEmpty}>
+              <Text>No Goals to Display</Text>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </>
     );
   }
+}
+
+function filterDetails(filter) {
+  return (
+    <>
+      <View style={{marginLeft: 10, marginRight: 20, marginBottom: 10}}>
+        <Button title="Filter Goals"></Button>
+      </View>
+      <View style={{flexDirection: 'row'}}>
+        <View style={{flex: 1, alignItems: 'flex-start', marginLeft: 10}}>
+          <Text style={{color: 'white'}}>Click to goal to view</Text>
+        </View>
+        <View style={{flex: 1, alignItems: 'center', marginRight: 10}}>
+          <Text style={{color: 'white'}}>Current Filter: {filter}</Text>
+        </View>
+      </View>
+    </>
+  );
 }
 
 /**

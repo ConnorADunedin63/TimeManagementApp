@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import { longTermGoals } from '../helpers/timeHelper.js';
 
 /**
   Gets the current list of goals from asynchronous storage
 */
-export async function getGoals() {
+export async function getGoals(filter) {
   try {
     const data = await AsyncStorage.getItem('@goals');
     if(data !== null) {
@@ -19,6 +20,12 @@ export async function getGoals() {
       });
 
       if(jsonData !== null) {
+        if(filter === 'Long Term') {
+          jsonData = longTermGoals(jsonData);
+        }
+        else if(filter === 'Short Term') {
+
+        }
         return jsonData;
       }
       else {

@@ -143,8 +143,10 @@ export function getMonth(date) {
   return array: An array of JSON goal objects from the original
 */
 export function longTermGoals(goals) {
+  if(goals === null) {
+    return null;
+  }
   const currentDate = new Date();
-
   let longTermGoals = goals.filter((goal) => {
       const goalDate = goal.date;
       // Calculate the difference in months
