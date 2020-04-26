@@ -29,9 +29,6 @@ import { getGoals, clearGoals } from '../logic/goals.js';
 import { convertTo12HourFormat, formatDate } from '../helpers/timeHelper.js';
 
 export default function HomeScreen({ navigation }) {
-  const [quoteExpanded, expandQuote] = useState(false);
-
-
   return (
     <View style={styles.container}>
         <View style={{flex: 8}}>
@@ -112,14 +109,14 @@ function goalsTable() {
               </View>
             </View>
             {
-              goals.map((item) => {
+              goals.map((item, index) => {
                 return (
-                  <View style={item.key % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd} key={item.key}>
+                  <View style={index % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd} key={item.key}>
                     <View style={styles.rowItem}>
                       <Text>{item.name}</Text>
                     </View>
                     <View style={styles.rowItem}>
-                      <Text>{convertTo12HourFormat(item.date)}</Text>
+                      <Text style={item.date === "N/A" ? {display: 'none'} : ''}>{convertTo12HourFormat(item.date)}</Text>
                       <Text>{formatDate(item.date)}</Text>
                     </View>
                   </View>
@@ -153,16 +150,16 @@ function filterDetails(filter, setFilter) {
     <>
       <View style={{flexDirection: 'row', marginLeft: 10, marginRight: 20, marginBottom: 10, marginTop: 10}}>
         <View style={{alignItems: 'center', marginRight: 10}}>
-          <Button title="All" color={filter == 'All' ? 'green' : ''} onPress={() => {setFilter("All")}} />
+          <Button title="All" color={filter === 'All' ? 'green' : ''} onPress={() => {setFilter("All")}} />
         </View>
         <View style={{alignItems: 'center', marginRight: 10}}>
-          <Button title="Ongoing" color={filter == 'Ongoing' ? 'green': ''} onPress={() => {setFilter("Ongoing")}} />
+          <Button title="Ongoing" color={filter === 'Ongoing' ? 'green': ''} onPress={() => {setFilter("Ongoing")}} />
         </View>
         <View style={{alignItems: 'center', marginRight: 10}}>
           <Button title="Short Term" color={filter == 'Short Term' ? 'green' : ''} onPress={() => {setFilter("Short Term")}} />
         </View>
         <View>
-          <Button title="Long Term" color={filter == 'Long Term' ? 'green': ''} onPress={() => {setFilter("Long Term")}}/>
+          <Button title="Long Term" color={filter === 'Long Term' ? 'green': ''} onPress={() => {setFilter("Long Term")}}/>
         </View>
       </View>
       <View style={{flexDirection: 'row'}}>

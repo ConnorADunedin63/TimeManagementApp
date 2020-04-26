@@ -135,6 +135,20 @@ export function getMonth(date) {
   }
 }
 
+/**
+  Returns a complete date String
+  params date: The Date object that should be used
+  return String: The complete date String in the form mm:hh Day, dd mm yyyy or N/A if date is not a Date object
+*/
+export function getCompleteDate(date) {
+  if(date instanceof Date) {
+    return (convertTo12HourFormat(date) + " " + getDayOfWeek(date) + ", " + date.getDate() + " " + getMonth(date) + " " + date.getFullYear());
+  }
+  else {
+    return "N/A";
+  }
+}
+
 
 /**
   Returns only the long term goals from the original list, a long term goal is anything
@@ -142,7 +156,7 @@ export function getMonth(date) {
   param: the list of goals that should be filtered
   return array: An array of JSON goal objects from the original
 */
-export function longTermGoals(goals) {
+export function getLongTermGoals(goals) {
   if(goals === null) {
     return null;
   }
@@ -170,4 +184,46 @@ export function longTermGoals(goals) {
       }
   });
   return longTermGoals;
+}
+
+/**
+  Returns only the short term goals from the original list, a short term goal is anything
+  shorter than or is three months away. Note this function does not calculate partial months.
+  param: the list of goals that should be filtered
+  return array: An array of JSON goal objects from the original
+*/
+export function getShortTermGoals(goals) {
+  if(goals === null) {
+    return null;
+  }
+  const currentDate = new Date();
+  let longTermGoals = goals.filter((goal) => {
+      const goalDate = goal.date;
+      // Calculate the difference in months
+      let diffMonths = 0;
+      // Short term goals should be in the future
+      if(goalDate > currentDate) {
+        // If goal is in the same year, it could be short term
+        if(goalDate.getFullYear() === currentDate.getFullYear()) {
+          // Calculate the month difference
+          diffMonths += (goalDate.getMonth() - currentDate.getMonth()) + 1;
+          // If the goal is less than or three months away, it is short term
+          if(diffMonths <= 3) {
+
+            return goal;
+          }
+        }
+      }
+  });
+  return longTermGoals;
+}
+
+export function getOngoingGoals(goals) {
+  let ongoingGoals = goals.filter((goal) => {
+    if(goal.date === "N/A") {
+      return goal;
+    }
+  });
+
+  return ongoingGoals;
 }

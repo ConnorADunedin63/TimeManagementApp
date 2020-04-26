@@ -25,7 +25,7 @@ import styles from './css/createGoalsStyles.js';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
 import { setGoals } from '../logic/goals.js';
-import { getDayOfWeek, convertTo12HourFormat, getMonth } from '../helpers/timeHelper.js';
+import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../helpers/timeHelper.js';
 
 export default function createGoal({ navigation }) {
   const [name, setName] = useState('');
@@ -54,6 +54,7 @@ export default function createGoal({ navigation }) {
 function datePicker(date, setDate) {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [hasEndDate, setEndDate] = useState('No')
 
     const onChange = (event, selectedDate) => {
       const currentDate = selectedDate || date;
@@ -78,13 +79,22 @@ function datePicker(date, setDate) {
 
     return (
     <View>
-      <View>
-        <TextInput placeholder={"Date: " + convertTo12HourFormat(date) + " " + getDayOfWeek(date) + ", " + date.getDate() + " " + getMonth(date) + " " + date.getFullYear()} style={styles.formDateInput} editable={false} selectTextOnFocus={false}></TextInput>
+      <Text style={{color: 'white'}}>Has End Date?</Text>
+      <View style={{flexDirection: 'row', alignItems: 'stretch'}}>
+        <View style={{flex: 1, marginRight: 10}}>
+          <Button title='Yes' color={hasEndDate ? 'green' : ''} onPress={() => {setEndDate(true); setDate(new Date())}} />
+        </View>
+        <View style={{flex: 1}}>
+          <Button title='No' color={hasEndDate === false ? 'green' : ''} onPress={() => {setEndDate(false); setDate("N/A")}} />
+        </View>
       </View>
-      <View style={styles.timeBtn}>
+      <View style={hasEndDate === false ? {display: 'none'} : ''}>
+        <TextInput placeholder={"Date: " + getCompleteDate(date)} style={styles.formDateInput} editable={false} selectTextOnFocus={false}></TextInput>
+      </View>
+      <View style={hasEndDate === false ? {display: 'none'} : styles.timeBtn}>
         <Button onPress={showDatepicker} title="Select Date" />
       </View>
-      <View style={styles.timeBtn}>
+      <View style={hasEndDate === false ? {display: 'none'} : styles.timeBtn}>
         <Button onPress={showTimepicker} title="Select Time" />
       </View>
       {show && (

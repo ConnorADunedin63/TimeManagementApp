@@ -26,14 +26,14 @@ export default StyleSheet.create({
   },
   formInput: {
     marginTop: 10,
-    backgroundColor: '#D3D3D3'
+    backgroundColor: 'white'
   },
   formDateInput: {
     marginTop: 10,
-    backgroundColor: 'white'
+    backgroundColor: '#D3D3D3'
   },
   timeBtn: {
-    marginTop: 5
+    marginTop: 5,
   },
   createContainer: {
     marginTop: 40
