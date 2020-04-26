@@ -145,7 +145,7 @@ export function getMonth(date) {
 export function longTermGoals(goals) {
   const currentDate = new Date();
 
-  let longTermGoals = goals.map((goal) => {
+  let longTermGoals = goals.filter((goal) => {
       const goalDate = goal.date;
       // Calculate the difference in months
       let diffMonths = 0;
@@ -161,6 +161,7 @@ export function longTermGoals(goals) {
           diffMonths += (goalDate.getMonth() - currentDate.getMonth()) + 1;
           // If the goal is more than three months away, it is long term
           if(diffMonths > 3) {
+
             return goal;
           }
         }
