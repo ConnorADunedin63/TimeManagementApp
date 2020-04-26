@@ -1,4 +1,4 @@
-import { convertTo12HourFormat, formatDate, getLongTermGoals, getShortTermGoals, } from '../../helpers/timeHelper.js'
+import { convertTo12HourFormat, formatDate, getLongTermGoals, getShortTermGoals, getOngoingGoals } from '../../helpers/timeHelper.js'
 /**
   Tests for checking date formatting functions
 */
@@ -237,5 +237,96 @@ describe("short term filter", () => {
     ];
 
     expect(getShortTermGoals(goals).length).toBe(2);
+  });
+});
+
+describe("ongoing goals filter", () => {
+  it("should return an empty array when there are no goals", () => {
+    const goals = [];
+    expect(getOngoingGoals(goals).length).toBe(0);
+  });
+
+  it("should return an empty array when there are only long or short term goals", () => {
+    const goalDate1 = new Date();
+    goalDate1.setFullYear(goalDate1.getFullYear() + 1);
+    const goalDate2 = new Date();
+    goalDate2.setDate(goalDate2.getDate() + 1);
+    const goalDate3 = new Date();
+    goalDate3.setFullYear(goalDate3.getFullYear() + 5);
+
+    const goals = [
+      {
+        name: 'Test Goal 1',
+        description: '',
+        date: goalDate1
+      },
+      {
+        name: 'Test Goal 2',
+        description: '',
+        date: goalDate2
+      },
+      {
+        name: 'Test Goal 3',
+        description: '',
+        date: goalDate3
+      }
+    ];
+
+    expect(getOngoingGoals(goals).length).toBe(0);
+  });
+
+  it("should return one goal when there is a single ongoing goal.", () => {
+    const goalDate1 = new Date();
+    goalDate1.setFullYear(goalDate1.getFullYear() + 1);
+    const goalDate2 = "N/A";
+    const goalDate3 = new Date();
+    goalDate3.setDate(goalDate3.getDate() + 1);
+
+    const goals = [
+      {
+        name: 'Test Goal 1',
+        description: '',
+        date: goalDate1
+      },
+      {
+        name: 'Test Goal 2',
+        description: '',
+        date: goalDate2
+      },
+      {
+        name: 'Test Goal 3',
+        description: '',
+        date: goalDate3
+      }
+    ];
+
+    expect(getOngoingGoals(goals).length).toBe(1);
+  });
+
+  it("should return two goals when there are two ongoing goals.", () => {
+    const goalDate1 = new Date();
+    goalDate1.setMinutes(goalDate1.getMinutes() + 1);
+    const goalDate2 = "N/A";
+    const goalDate3 = "N/A";
+
+    const goals = [
+      {
+        name: 'Test Goal 1',
+        description: '',
+        date: goalDate1
+      },
+      {
+        name: 'Test Goal 2',
+        description: '',
+        date: goalDate2
+      },
+      {
+        name: 'Test Goal 3',
+        description: '',
+        date: goalDate3
+      }
+    ];
+
+    expect(getOngoingGoals(goals).length).toBe(2);
   });
 });
