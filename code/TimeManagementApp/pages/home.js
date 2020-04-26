@@ -21,7 +21,6 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import {NavigationContainer} from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
 
 // Import stylesheet
 import styles from './css/homeStyles.js';
@@ -81,7 +80,7 @@ function goalsTable() {
   useEffect(() => {
     async function setGoalState() {
       let currentGoals = await getGoals();
-      setGoals(currentGoals);
+      await setGoals(currentGoals);
     }
 
     setGoalState();
