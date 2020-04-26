@@ -34,15 +34,16 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-        {quote(quoteExpanded, expandQuote)}
-        <View style={quoteExpanded == false ? {flex: 8} : {flex: 2}}>
+        <View style={{flex: 8}}>
           <View style={styles.sectionContainer}>
             <View style={styles.sectionHeader}>
               <View style={{ flex: 1, alignItems: 'flex-start'}}>
                 <Text style={styles.sectionTitle}>Goals</Text>
               </View>
               <View style={{ flex: 1, alignItems: 'flex-end', marginRight: 20, marginTop: 5}}>
-                <Button title='Clear Goals' color='red'
+                <Button
+                title='Clear Goals'
+                color='red'
                 onPress={() => {
                   Alert.alert(
                     'Clear all goals?',
@@ -60,12 +61,6 @@ export default function HomeScreen({ navigation }) {
               <Button title="Create Goal" onPress={() => {navigation.navigate('Create Goal')}}></Button>
             </View>
           </View>
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Checklists</Text>
-            <View style={{flex: 0.25, alignItems: "center", marginTop: 10}}>
-              <Button title="Create Checklist"></Button>
-            </View>
-          </View>
         </View>
     </View>
   );
@@ -77,7 +72,7 @@ export default function HomeScreen({ navigation }) {
 */
 function goalsTable() {
   const [goals, setGoals] = useState(null);
-  const [filter, setFilter] = useState('Long Term');
+  const [filter, setFilter] = useState('All');
   useEffect(() => {
     async function setGoalState() {
       let currentGoals = await getGoals(filter);
@@ -91,7 +86,7 @@ function goalsTable() {
   if(goals === null) {
     return(
       <>
-        {filterDetails(filter)}
+        {filterDetails(filter, setFilter)}
         <ScrollView style={styles.tableContainer}>
           <View style={styles.sectionTable}>
             <View style={styles.tableRowEmpty}>
@@ -105,7 +100,7 @@ function goalsTable() {
   else if(goals.length > 0) {
     return(
       <>
-        {filterDetails(filter)}
+        {filterDetails(filter, setFilter)}
         <ScrollView style={styles.tableContainer}>
           <View style={styles.sectionTable}>
             <View style={styles.tableHeader}>
@@ -140,7 +135,7 @@ function goalsTable() {
   else {
     return(
       <>
-        {filterDetails(filter)}
+        {filterDetails(filter, setFilter)}
         <ScrollView style={styles.tableContainer}>
           <View style={styles.sectionTable}>
             <View style={styles.tableRowEmpty}>
@@ -153,11 +148,22 @@ function goalsTable() {
   }
 }
 
-function filterDetails(filter) {
+function filterDetails(filter, setFilter) {
   return (
     <>
-      <View style={{marginLeft: 10, marginRight: 20, marginBottom: 10}}>
-        <Button title="Filter Goals"></Button>
+      <View style={{flexDirection: 'row', marginLeft: 10, marginRight: 20, marginBottom: 10, marginTop: 10}}>
+        <View style={{alignItems: 'center', marginRight: 10}}>
+          <Button title="All" color={filter == 'All' ? 'green' : ''} onPress={() => {setFilter("All")}} />
+        </View>
+        <View style={{alignItems: 'center', marginRight: 10}}>
+          <Button title="Ongoing" color={filter == 'Ongoing' ? 'green': ''} onPress={() => {setFilter("Ongoing")}} />
+        </View>
+        <View style={{alignItems: 'center', marginRight: 10}}>
+          <Button title="Short Term" color={filter == 'Short Term' ? 'green' : ''} onPress={() => {setFilter("Short Term")}} />
+        </View>
+        <View>
+          <Button title="Long Term" color={filter == 'Long Term' ? 'green': ''} onPress={() => {setFilter("Long Term")}}/>
+        </View>
       </View>
       <View style={{flexDirection: 'row'}}>
         <View style={{flex: 1, alignItems: 'flex-start', marginLeft: 10}}>
@@ -169,37 +175,4 @@ function filterDetails(filter) {
       </View>
     </>
   );
-}
-
-/**
-  Displays the daily quote at the top of the screen.
-  The quote can be expanded to give more information when clicked.
-*/
-function quote(expanded, setExpanded) {
-  // Quotes is a 2D array, each sub array will contain a minimised version and an expanded version
-  const quotes = [
-    [
-      "Understand what is in your control and what is not",
-      "It is important to understand that some things in life are in our control and others are not. \n Instead of focussing on what is not in our control we should focus on what we can."
-    ],
-    [
-      "Remember the nature of things",
-      "In life everything is temporary, items brake and loved ones die. It is important that we realise this so we can be aware that a loved one could be taken from us at any time and that one day they will die no matter what we do. Remembering this will allow us to make the most of the time with loved ones and when they do one day die we can remember that this is the natural order of things."
-    ],
-    [
-      "Its your judgements that disturb you, not the event",
-      "Events do not cause you distress, your judgements do. In life we cannot control events that happen, like a boat at sea we are at the mercy of the waves and are just along for the ride. We are not helpless, we can control how we react to an event and how we view them. Event the most hideous events in history often lead to positive change after the fact."
-    ],
-    [
-      "Ignore what other people think of you",
-      "When somebody insults you there are only two views. Either they speak the truth and you can learn something or they are talking bullshit and you can ignore them. When someone speaks the truth why get upset by what is visible to all."
-    ],
-  ];
-
-  return(
-    <TouchableOpacity style={styles.quoteContainer} onPress={() => {setExpanded(!expanded)}}>
-      <Text style={styles.quote}>{expanded ? quotes[0][1] : quotes[0][0]}</Text>
-      <Text style={{color: 'white', alignSelf: 'flex-end', marginTop: 10}}>Click to {expanded ? 'minimise' : 'expand'}</Text>
-    </TouchableOpacity>
-  )
 }
