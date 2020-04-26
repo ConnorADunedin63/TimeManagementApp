@@ -25,7 +25,7 @@ import {NavigationContainer} from '@react-navigation/native';
 // Import stylesheet
 import styles from './css/homeStyles.js';
 
-import { getGoals, clearGoals } from '../logic/goals.js';
+import { getGoals, clearGoals, deleteGoal } from '../logic/goals.js';
 import { convertTo12HourFormat, formatDate } from '../helpers/timeHelper.js';
 
 export default function HomeScreen({ navigation }) {
@@ -110,6 +110,7 @@ function goalsTable(navigation) {
               <View style={styles.rowItem}>
                 <Text>Due Date</Text>
               </View>
+              <View style={styles.rowItem} />
             </View>
             {
               goals.map((item, index) => {
@@ -122,6 +123,20 @@ function goalsTable(navigation) {
                     <View style={styles.rowItem}>
                       <Text style={item.date === "N/A" ? {display: 'none'} : ''}>{convertTo12HourFormat(item.date)}</Text>
                       <Text>{formatDate(item.date)}</Text>
+                    </View>
+                    <View style={styles.deleteItem}>
+                      <Button title='Delete'
+                      color='red'
+                      onPress={() => {
+                        Alert.alert(
+                          "Delete This Goal?",
+                          "Are you sure you want to delete this goal?",
+                          [
+                            {text: 'No'},
+                            {text: 'Yes', onPress: () => { deleteGoal(item.key); alert("Goal Deleted") }}
+                          ]
+                        )
+                      }}/>
                     </View>
                   </TouchableOpacity>
                 );

@@ -24,7 +24,7 @@ import styles from './css/editGoalStyles.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
-import { setGoals } from '../logic/goals.js';
+import { updateGoal } from '../logic/goals.js';
 import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../helpers/timeHelper.js';
 
 export default function editGoal({ route, navigation }) {
@@ -61,7 +61,7 @@ export default function editGoal({ route, navigation }) {
         {datePicker(date, setDate, editGoal)}
         <View style={editGoal ? styles.createContainer : {display: 'none'}}>
           <Button title="Edit Goal"
-          onPress={() => {setGoals(name, description, date); navigation.navigate('Home')}}
+          onPress={() => {updateGoal(name, description, date, goal.key); navigation.navigate('Home')}}
           disabled={name === '' ? true : false }></Button>
         </View>
       </View>
