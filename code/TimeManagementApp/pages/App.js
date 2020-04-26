@@ -32,6 +32,7 @@ import {
 
 import HomeScreen from './home.js';
 import CreateGoal from './createGoals.js';
+import EditGoal from './editGoal.js';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Create Goal" component={CreateGoal} />
+        <Stack.Screen name="Edit Goal" component={EditGoal} />
       </Stack.Navigator>
     </NavigationContainer>
   );
