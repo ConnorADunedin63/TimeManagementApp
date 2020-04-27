@@ -47,6 +47,12 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  deleteItem: {
+    flex: 1,
+    marginTop: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   tableRowEmpty: {
     height: 50,
     alignItems: 'center',

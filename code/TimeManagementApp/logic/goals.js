@@ -61,7 +61,7 @@ export async function setGoals(name, description, date) {
     name: name,
     description: description,
     date: date,
-    key: currentGoals.length
+    key: name + date
   };
 
   // Push the new goal to the array
@@ -87,4 +87,69 @@ export async function clearGoals() {
       console.log("The following error occured while clearing goals...");
       console.log(e);
     }
+}
+
+
+/**
+  Edits an existing goal using the name, description and date from the edit page.
+  The unique key is used to find the goal that should be updated
+  param name: The name of the goal
+  param description: The description of the goal
+  param date: The date of the goal
+  param key: The unique key for the goal that should be updated
+  return none: Function returns nothing, updated goals are sent to asynchronous storage
+*/
+export async function updateGoal(name, description, date, key) {
+  // Gets the current goals
+  var currentGoals = await getGoals();
+
+  for(let i = 0; i < currentGoals.length; i ++) {
+    // If the keys match
+    if(currentGoals[i].key === key) {
+      // Update the details and break
+      currentGoals[i].name = name;
+      currentGoals[i].description = description;
+      currentGoals[i].date = date;
+      break;
+    }
+  }
+
+  try {
+    // Send the modified goals to asynchronous storage
+    await AsyncStorage.setItem('@goals', JSON.stringify(currentGoals));
+  }
+  catch(e) {
+    console.log("The following error occured while updating goal...");
+    console.log(e);
+  }
+}
+
+/**
+  Deletes a goal with the given key
+  param key: The key of the goal that should be removed
+  return none: List of goals is updated to AsyncStorage
+*/
+export async function deleteGoal(key) {
+  var currentGoals = await getGoals();
+  var index = -1;
+  for(var i = 0; i < currentGoals.length; i ++) {
+    // If the goal is found
+    if(currentGoals[i].key === key) {
+      // Save the index and break
+      index = i;
+      break;
+    }
+  }
+
+  // Remove the goal at index
+  if(index !== -1) {
+    currentGoals.splice(index, 1);
+    try {
+      await AsyncStorage.setItem('@goals', JSON.stringify(currentGoals));
+    }
+    catch(e) {
+      console.log("The following error occured while deleting goal");
+      console.log(e);
+    }
+  }
 }

@@ -25,7 +25,7 @@ import {NavigationContainer} from '@react-navigation/native';
 // Import stylesheet
 import styles from './css/homeStyles.js';
 
-import { getGoals, clearGoals } from '../logic/goals.js';
+import { getGoals, clearGoals, deleteGoal } from '../logic/goals.js';
 import { convertTo12HourFormat, formatDate } from '../helpers/timeHelper.js';
 
 export default function HomeScreen({ navigation }) {
@@ -53,7 +53,7 @@ export default function HomeScreen({ navigation }) {
                 }}></Button>
               </View>
             </View>
-            {goalsTable()}
+            {goalsTable(navigation)}
             <View style={{flex: 0.5, alignItems: "center", marginTop: 10}}>
               <Button title="Create Goal" onPress={() => {navigation.navigate('Create Goal')}}></Button>
             </View>
@@ -70,7 +70,7 @@ export default function HomeScreen({ navigation }) {
   Displays the goals table, shows the name and description.
   The rows should be selectable to edit.
 */
-function goalsTable() {
+function goalsTable(navigation) {
   const [goals, setGoals] = useState(null);
   const [filter, setFilter] = useState('All');
   useEffect(() => {
@@ -110,11 +110,13 @@ function goalsTable() {
               <View style={styles.rowItem}>
                 <Text>Due Date</Text>
               </View>
+              <View style={styles.rowItem} />
             </View>
             {
               goals.map((item, index) => {
                 return (
-                  <View style={index % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd} key={item.key}>
+                  <TouchableOpacity style={index % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd}
+                  key={item.key} onPress={() => {navigation.navigate("Edit Goal", {goal: item})}}>
                     <View style={styles.rowItem}>
                       <Text>{item.name}</Text>
                     </View>
@@ -122,7 +124,21 @@ function goalsTable() {
                       <Text style={item.date === "N/A" ? {display: 'none'} : ''}>{convertTo12HourFormat(item.date)}</Text>
                       <Text>{formatDate(item.date)}</Text>
                     </View>
-                  </View>
+                    <View style={styles.deleteItem}>
+                      <Button title='Delete'
+                      color='red'
+                      onPress={() => {
+                        Alert.alert(
+                          "Delete This Goal?",
+                          "Are you sure you want to delete this goal?",
+                          [
+                            {text: 'No'},
+                            {text: 'Yes', onPress: () => { deleteGoal(item.key); alert("Goal Deleted") }}
+                          ]
+                        )
+                      }}/>
+                    </View>
+                  </TouchableOpacity>
                 );
               })
             }
