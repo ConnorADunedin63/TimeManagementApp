@@ -24,7 +24,7 @@ import styles from './css/createGoalsStyles.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
-import { setGoals } from '../logic/goals.js';
+import { setGoals, updateTask } from '../logic/goals.js';
 import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../helpers/timeHelper.js';
 
 export default function createGoal({ navigation }) {
@@ -178,8 +178,7 @@ function displayTasks(checklist, setChecklist) {
           title={checklist[i].complete ? 'Complete' : 'Not Complete'}
           color={checklist[i].complete ? 'green' : 'red'}
           onPress={() => {
-            let newChecklist = checklist.splice();
-            console.log(checklist);
+            setChecklist(updateTask(checklist, i));
           }} />
         </View>
       </View>

@@ -153,3 +153,21 @@ export async function deleteGoal(key) {
     }
   }
 }
+
+/**
+  Copies the original array and updates the JSON
+  param checklist: The original checklist
+  param index: The index of the task that should be toggled
+  return Array: The new checklist with the task at index being toggled
+*/
+export function updateTask(checklist, index) {
+  let updatedChecklist = [];
+  // Copy the JSON to the new array
+  for(let i = 0; i < checklist.length; i ++) {
+    updatedChecklist.push(checklist[i]);
+  }
+  // Toggle the task at index
+  updatedChecklist[index].complete = !updatedChecklist[index].complete;
+
+  return updatedChecklist;
+}
