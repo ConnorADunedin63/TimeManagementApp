@@ -31,7 +31,7 @@ export default function createGoal({ navigation }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
-  const[checklist, setChecklist] = useState([]);
+  const [checklist, setChecklist] = useState(null);
 
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -46,7 +46,7 @@ export default function createGoal({ navigation }) {
           {goalChecklist(checklist, setChecklist)}
           <View style={styles.createContainer}>
             <Button title="Create Goal"
-            onPress={() => {setGoals(name, description, date); navigation.navigate('Home')}}
+            onPress={() => {setGoals(name, description, date, checklist); navigation.navigate('Home')}}
             disabled={name === '' ? true : false }></Button>
           </View>
         </View>
