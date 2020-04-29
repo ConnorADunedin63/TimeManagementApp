@@ -43,7 +43,6 @@ export function convertTo12HourFormat(date) {
     return format;
   }
   else {
-    console.log("datetime is not a Date object");
     return 'N/A';
   }
 }

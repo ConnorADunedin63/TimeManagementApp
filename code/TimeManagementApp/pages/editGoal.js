@@ -8,7 +8,7 @@ import {
   StatusBar,
   Image,
   TextInput,
-  Platform,
+  Platform
 } from 'react-native';
 
 import {
@@ -38,6 +38,7 @@ export default function editGoal({ route, navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
+
       <View style={styles.container}>
         <View style={styles.sectionTitleContainer}>
           <View style={styles.sectionTitleRow}>
@@ -61,8 +62,8 @@ export default function editGoal({ route, navigation }) {
           editable={editGoal}
           onChangeText={text => setDescription(text)}/>
           {datePicker(date, setDate, editGoal)}
-          {goalChecklist(checklist, setChecklist)}
-          <View style={editGoal ? styles.createContainer : {display: 'none'}}>
+          {goalChecklist(checklist, setChecklist, editGoal)}
+          <View style={styles.createContainer}>
             <Button title="Edit Goal"
             onPress={() => {updateGoal(name, description, date, checklist, goal.key); navigation.navigate('Home')}}
             disabled={name === '' ? true : false }></Button>
@@ -156,7 +157,7 @@ function datePicker(date, setDate, editGoal) {
   param setChecklist: The function that is used to set the checklist
   return React Native component: The react native components used to display tasks
 */
-function goalChecklist(checklist, setChecklist) {
+function goalChecklist(checklist, setChecklist, editGoal) {
   const [hasChecklist, setHasChecklist] = useState(checklist !== null ? true : false);
   const [task, setTask] = useState('');
 
@@ -167,10 +168,16 @@ function goalChecklist(checklist, setChecklist) {
       </View>
       <View style={{flexDirection: 'row', alignItems: 'stretch'}}>
         <View style={{flex: 1, marginRight: 10}}>
-          <Button title='Yes' color={hasChecklist ? 'green' : ''} onPress={() => {setHasChecklist(true); setChecklist([])}} />
+          <Button title='Yes'
+          color={hasChecklist ? 'green' : ''}
+          disabled={!editGoal}
+          onPress={() => {setHasChecklist(true); setChecklist([])}} />
         </View>
         <View style={{flex: 1}}>
-          <Button title='No' color={hasChecklist === false ? 'green' : ''} onPress={() => {setHasChecklist(false); setChecklist(null)}} />
+          <Button title='No'
+          color={hasChecklist === false ? 'green' : ''}
+          disabled={!editGoal}
+          onPress={() => {setHasChecklist(false); setChecklist(null)}} />
         </View>
       </View>
       <View style={hasChecklist === false ? {display : 'none'} : ''}>
