@@ -34,22 +34,24 @@ export default function createGoal({ navigation }) {
   const[checklist, setChecklist] = useState([]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.sectionTitleContainer}>
-        <Text style={styles.sectionTitle}>Create Goal</Text>
-      </View>
-      <View style={styles.formContainer}>
-        <TextInput style={styles.formInput} placeholder="Name (required)" onChangeText={text => setName(text)}></TextInput>
-        <TextInput style={styles.formInput} placeholder="Description (optional)" onChangeText={text => setDescription(text)}></TextInput>
-        {datePicker(date, setDate)}
-        {goalChecklist(checklist, setChecklist)}
-        <View style={styles.createContainer}>
-          <Button title="Create Goal"
-          onPress={() => {setGoals(name, description, date); navigation.navigate('Home')}}
-          disabled={name === '' ? true : false }></Button>
+    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+      <View style={styles.container}>
+        <View style={styles.sectionTitleContainer}>
+          <Text style={styles.sectionTitle}>Create Goal</Text>
+        </View>
+        <View style={styles.formContainer}>
+          <TextInput style={styles.formInput} placeholder="Name (required)" onChangeText={text => setName(text)}></TextInput>
+          <TextInput style={styles.formInput} placeholder="Description (optional)" onChangeText={text => setDescription(text)}></TextInput>
+          {datePicker(date, setDate)}
+          {goalChecklist(checklist, setChecklist)}
+          <View style={styles.createContainer}>
+            <Button title="Create Goal"
+            onPress={() => {setGoals(name, description, date); navigation.navigate('Home')}}
+            disabled={name === '' ? true : false }></Button>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -92,7 +94,14 @@ function datePicker(date, setDate) {
       </View>
       <View style={{flexDirection: 'row', alignItems: 'stretch'}}>
         <View style={{flex: 1, marginRight: 10}}>
-          <Button title='Yes' color={hasEndDate ? 'green' : ''} onPress={() => {setEndDate(true); setDate(new Date())}} />
+          <Button title='Yes' color={hasEndDate ? 'green' : ''}
+          onPress={() => {
+            // Should only set end date if it is not already true
+            if(hasEndDate === false) {
+              setEndDate(true);
+              setDate(new Date());
+            }
+          }} />
         </View>
         <View style={{flex: 1}}>
           <Button title='No' color={hasEndDate === false ? 'green' : ''} onPress={() => {setEndDate(false); setDate("N/A")}} />

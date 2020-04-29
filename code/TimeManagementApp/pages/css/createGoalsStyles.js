@@ -5,7 +5,8 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'flex-start',
-    backgroundColor: '#20639B'
+    backgroundColor: '#20639B',
+    paddingBottom: 10
   },
   sectionTitleContainer: {
     alignItems: 'center',
