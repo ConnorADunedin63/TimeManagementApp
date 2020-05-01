@@ -15,13 +15,15 @@ export async function getGoals(filter) {
         if(date !== "N/A") {
           date = new Date(date);
         }
-        let newRecord = {
+        // Add an actual date object to the JSON object instead of a String
+        let transformedGoal = {
           name: record.name,
           description: record.description,
           date: date,
+          checklist: record.checklist,
           key: record.key
         };
-        return newRecord;
+        return transformedGoal;
       });
 
       if(jsonData !== null) {
@@ -51,8 +53,12 @@ export async function getGoals(filter) {
 
 /**
   Adds a goals with the given name, description and date to the list of goals
+  param name: The name of the goal
+  param description: The description of the goal
+  param date: The due date of the goal
+  param checklist: The array of tasks that need to be completed
 */
-export async function setGoals(name, description, date) {
+export async function setGoals(name, description, date, checklist) {
   // Gets the current goals =
   var currentGoals = await getGoals();
 
@@ -61,6 +67,7 @@ export async function setGoals(name, description, date) {
     name: name,
     description: description,
     date: date,
+    checklist: checklist,
     key: name + date
   };
 
@@ -96,10 +103,11 @@ export async function clearGoals() {
   param name: The name of the goal
   param description: The description of the goal
   param date: The date of the goal
+  param checklist: The checklist of tasks that need to be complete
   param key: The unique key for the goal that should be updated
   return none: Function returns nothing, updated goals are sent to asynchronous storage
 */
-export async function updateGoal(name, description, date, key) {
+export async function updateGoal(name, description, date, checklist, key) {
   // Gets the current goals
   var currentGoals = await getGoals();
 
@@ -110,6 +118,7 @@ export async function updateGoal(name, description, date, key) {
       currentGoals[i].name = name;
       currentGoals[i].description = description;
       currentGoals[i].date = date;
+      currentGoals[i].checklist = checklist
       break;
     }
   }
@@ -152,4 +161,22 @@ export async function deleteGoal(key) {
       console.log(e);
     }
   }
+}
+
+/**
+  Copies the original array and updates the JSON
+  param checklist: The original checklist
+  param index: The index of the task that should be toggled
+  return Array: The new checklist with the task at index being toggled
+*/
+export function updateTask(checklist, index) {
+  let updatedChecklist = [];
+  // Copy the JSON to the new array
+  for(let i = 0; i < checklist.length; i ++) {
+    updatedChecklist.push(checklist[i]);
+  }
+  // Toggle the task at index
+  updatedChecklist[index].complete = !updatedChecklist[index].complete;
+
+  return updatedChecklist;
 }

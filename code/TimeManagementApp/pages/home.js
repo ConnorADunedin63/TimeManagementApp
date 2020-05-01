@@ -58,9 +58,6 @@ export default function HomeScreen({ navigation }) {
               <Button title="Create Goal" onPress={() => {navigation.navigate('Create Goal')}}></Button>
             </View>
           </View>
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Timeline</Text>
-          </View>
         </View>
     </View>
   );

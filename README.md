@@ -1,4 +1,4 @@
 # TimeManagementApp
 A checklist and goal setting app built using react native
 
-The goal is to provide an app where users can create short term and long term goals as well as checklists for managing their time. I wanted to create my own app because it means I can easily expand it when I think of a new feature.
+There will be three main features. The ability to set goals with checklists for specific tasks that are required to complete the goal. The ability to view goals in both a table and timeline. Daily schedules will allow the user to set schedules for specific days, at the end of each day with a schedule the user can report what they ended up getting done and what they did not. Over time this will allow the user to better manage their time by seeing what they often don't get done.
