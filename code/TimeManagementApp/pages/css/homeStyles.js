@@ -8,7 +8,7 @@ export default StyleSheet.create({
     backgroundColor: '#20639B'
   },
   sectionContainer: {
-     flex: 4,
+     flex: 1,
      alignItems: 'stretch'
   },
   sectionHeader: {
