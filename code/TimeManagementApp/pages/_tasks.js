@@ -117,8 +117,7 @@ function displayTasks(checklist, setChecklist) {
                 "Are you sure you wish to delete this event?",
                 [
                   {text: 'Yes', onPress: () => {
-                    deleteTask(checklist, checklist[i].name);
-                    setChecklist(checklist);
+                    setChecklist(deleteTask(checklist, checklist[i].name));
                     alert("Task deleted");
                   }},
                   {text: 'No'}
