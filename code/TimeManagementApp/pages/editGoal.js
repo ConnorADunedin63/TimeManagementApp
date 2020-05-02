@@ -24,6 +24,8 @@ import styles from './css/editGoalStyles.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
+import { goalChecklist } from './_tasks.js';
+
 import { updateGoal, updateTask } from '../logic/goals.js';
 import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../helpers/timeHelper.js';
 
@@ -148,79 +150,4 @@ function datePicker(date, setDate, editGoal) {
       )}
     </View>
   );
-}
-
-
-/**
-  Returns the react components that are used to render the checklist
-  param checklist: An array of JSON objects that represents tasks, with a name and boolean
-  param setChecklist: The function that is used to set the checklist
-  return React Native component: The react native components used to display tasks
-*/
-function goalChecklist(checklist, setChecklist, editGoal) {
-  const [hasChecklist, setHasChecklist] = useState(checklist !== null ? true : false);
-  const [task, setTask] = useState('');
-
-  return (
-    <View>
-      <View style={{marginTop: 10}}>
-        <Text style={{color: 'white'}}>Has Checklist?</Text>
-      </View>
-      <View style={{flexDirection: 'row', alignItems: 'stretch'}}>
-        <View style={{flex: 1, marginRight: 10}}>
-          <Button title='Yes'
-          color={hasChecklist ? 'green' : ''}
-          disabled={!editGoal}
-          onPress={() => {setHasChecklist(true); setChecklist([])}} />
-        </View>
-        <View style={{flex: 1}}>
-          <Button title='No'
-          color={hasChecklist === false ? 'green' : ''}
-          disabled={!editGoal}
-          onPress={() => {setHasChecklist(false); setChecklist(null)}} />
-        </View>
-      </View>
-      <View style={hasChecklist === false ? {display : 'none'} : ''}>
-        <View style={{flexDirection: 'row', alignItems: 'stretch'}}>
-          <View style={{flex: 2, marginRight: 10, marginTop: 10}}>
-            <TextInput placeholder='Task name'
-            style={{backgroundColor: 'white'}}
-            value={task}
-            onChangeText={text => {setTask(text)}}/>
-          </View>
-          <View style={{flex: 1, marginTop: 15}}>
-            <Button title='Create task' onPress={() => {checklist.push({name: task, complete: false}); setTask('')}} />
-          </View>
-        </View>
-        {checklist !== null ? displayTasks(checklist, setChecklist) : null}
-      </View>
-    </View>
-  );
-}
-
-/**
-  Displays the current checklist
-*/
-function displayTasks(checklist, setChecklist) {
-  let checklistItems = [];
-  if(checklist !== null) {
-    for(let i = 0; i < checklist.length; i ++) {
-      checklistItems.push(
-        <View style={{flexDirection: 'row', marginTop: 10, marginRight: 10}} key={i}>
-          <View style={{flex: 2, marginTop: 8}}>
-            <Text style={{color: 'white'}}>{checklist[i].name}</Text>
-          </View>
-          <View style={{flex: 2}}>
-            <Button
-            title={checklist[i].complete ? 'Complete' : 'Not Complete'}
-            color={checklist[i].complete ? 'green' : 'red'}
-            onPress={() => {
-              setChecklist(updateTask(checklist, i));
-            }} />
-          </View>
-        </View>
-      );
-    }
-  }
-  return checklistItems;
 }
