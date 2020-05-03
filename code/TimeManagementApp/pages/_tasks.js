@@ -29,9 +29,11 @@ import { taskNotPresent, deleteTask } from '../logic/tasks.js';
   Returns the react components that are used to render the checklist
   param checklist: An array of JSON objects that represents tasks, with a name and boolean
   param setChecklist: The function that is used to set the checklist
+  param editGoal: Whether details of the goal are editable, default value is true so parameter does not have to be
+  provided when creating a goal.
   return React Native component: The react native components used to display tasks
 */
-export function goalChecklist(checklist, setChecklist, editGoal) {
+export function goalChecklist(checklist, setChecklist, editGoal=true) {
   const [hasChecklist, setHasChecklist] = useState(checklist !== null ? true : false);
   const [task, setTask] = useState('');
 
