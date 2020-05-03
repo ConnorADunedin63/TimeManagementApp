@@ -96,13 +96,13 @@ function displayTasks(checklist, setChecklist) {
     for(let i = 0; i < checklist.length; i ++) {
       checklistItems.push(
         <View style={{flexDirection: 'row', marginTop: 10, marginRight: 10}} key={i}>
-          <View style={{flex: 2, marginTop: 8}}>
+          <View style={{flex: 2, marginTop: 8, marginRight: 5}}>
             <Text style={{color: 'white'}}>{checklist[i].name}</Text>
           </View>
           <View style={{flex: 2, marginRight: 10}}>
             <Button
-            title={checklist[i].complete ? 'Complete' : 'Not Complete'}
-            color={checklist[i].complete ? 'green' : 'red'}
+            title={checklist[i].complete ? 'Complete' : 'Pending'}
+            color={checklist[i].complete ? 'green' : 'orange'}
             onPress={() => {
               setChecklist(updateTask(checklist, i));
             }} />
