@@ -5,12 +5,11 @@
   return boolean: true if the task is not present in the checklist, false if it is
 */
 export function taskNotPresent(checklist, task) {
-  checklist.forEach(item => {
-    // Task is present, return false
-    if(item.name === task) {
+  for(let i = 0; i < checklist.length; i ++) {
+    if(checklist[i].name === task) {
       return false;
     }
-  });
+  }
   return true;
 }
 
