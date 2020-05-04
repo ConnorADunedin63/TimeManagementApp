@@ -32,6 +32,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import GoalsStack from './goals/goalHome.js';
+import SchedulesStack from './schedules/schedulesHome.js';
 
 export default function App() {
   const Drawer = createDrawerNavigator();
@@ -39,7 +40,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Goals">
-        <Drawer.Screen options={{headerShown: false}} name="Goals" component={GoalsStack} />
+        <Drawer.Screen name="Goals" component={GoalsStack} />
+        <Drawer.Screen name="Schedules" component={SchedulesStack} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
