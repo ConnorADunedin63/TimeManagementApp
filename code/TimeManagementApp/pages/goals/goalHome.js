@@ -21,14 +21,30 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 // Import stylesheet
-import styles from './css/homeStyles.js';
+import styles from '../css/homeStyles.js';
 
-import { getGoals, clearGoals, deleteGoal } from '../logic/goals.js';
-import { convertTo12HourFormat, formatDate } from '../helpers/timeHelper.js';
+// Import pages
+import CreateGoal from './createGoals.js';
+import EditGoal from './editGoal.js';
 
-export default function HomeScreen({ navigation }) {
+import { getGoals, clearGoals, deleteGoal } from '../../logic/goals.js';
+import { convertTo12HourFormat, formatDate } from '../../helpers/timeHelper.js';
+
+export default function GoalsStack() {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen options={{headerShown: false}} name="Home" component={GoalsHomeScreen} />
+      <Stack.Screen name="Create Goal" component={CreateGoal} />
+      <Stack.Screen name="Edit Goal" component={EditGoal} />
+    </Stack.Navigator>
+  );
+}
+
+function GoalsHomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
         <View style={{flex: 8}}>

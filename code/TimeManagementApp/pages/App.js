@@ -31,9 +31,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import HomeScreen from './home.js';
-import CreateGoal from './createGoals.js';
-import EditGoal from './editGoal.js';
+import GoalsStack from './goals/goalHome.js';
 
 export default function App() {
   const Drawer = createDrawerNavigator();
@@ -41,19 +39,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Goals">
-        <Drawer.Screen options={{headerShown: false}} name="Goals" component={Goals} />
+        <Drawer.Screen options={{headerShown: false}} name="Goals" component={GoalsStack} />
       </Drawer.Navigator>
     </NavigationContainer>
-  );
-}
-
-function Goals() {
-  const Stack = createStackNavigator();
-  return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen} />
-      <Stack.Screen name="Create Goal" component={CreateGoal} />
-      <Stack.Screen name="Edit Goal" component={EditGoal} />
-    </Stack.Navigator>
   );
 }
