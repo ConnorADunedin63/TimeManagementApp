@@ -23,19 +23,46 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import styles from '../css/scheduleHomeStyles.js';
+
+import TodaySchedule from './todaySchedule.js';
+
 export default function SchedulesStack() {
   const Stack = createStackNavigator();
   return (
     <Stack.Navigator initialRouteName="SchedulesHome">
       <Stack.Screen options={{headerShown: false}} name="SchedulesHome" component={SchedulesHome} />
+      <Stack.Screen options={{headerShown: false}} name="TodaySchedule" component={TodaySchedule} />
     </Stack.Navigator>
   );
 }
 
-function SchedulesHome() {
+function SchedulesHome({ navigation }) {
   return (
-    <View>
-      <Text>Schedule Home</Text>
+    <View style={styles.bodyContainer}>
+      <View style={styles.innerContainer}>
+        <View style={{alignItems: 'center'}}>
+          <Text style={styles.pageTitle}>Daily Schedules</Text>
+        </View>
+        <View style={styles.todayButton}>
+          <Button title="View today's schedule" onPress={() => {navigation.navigate("TodaySchedule")}}/>
+        </View>
+        <View style={{marginTop: 10}}>
+          <Text style={styles.tableTitle}>Current Schedules</Text>
+        </View>
+        {scheduleTable()}
+        <View style={{marginTop: 10}}>
+          <Button title="Create Schedule" />
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function scheduleTable() {
+  return (
+    <View style={{backgroundColor: 'white', marginTop: 10}}>
+      <Text>Table goes here</Text>
     </View>
   );
 }
