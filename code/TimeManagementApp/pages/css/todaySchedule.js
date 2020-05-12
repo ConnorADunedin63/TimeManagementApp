@@ -10,8 +10,20 @@ export default StyleSheet.create({
   innerContainer: {
     marginLeft: 10,
     marginRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
     alignItems: 'stretch',
-    backgroundColor: 'white'
+
+  },
+  hourContainer: {
+    height: 100,
+    backgroundColor: 'white',
+    alignItems: 'center'
+  },
+  hourContainerEven: {
+    height: 100,
+    backgroundColor: 'grey',
+    alignItems: 'center'
   },
   pageTitle: {
     fontSize: 32,

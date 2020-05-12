@@ -32,7 +32,7 @@ export default function SchedulesStack() {
   return (
     <Stack.Navigator initialRouteName="SchedulesHome">
       <Stack.Screen options={{headerShown: false}} name="SchedulesHome" component={SchedulesHome} />
-      <Stack.Screen options={{headerShown: false}} name="TodaySchedule" component={TodaySchedule} />
+      <Stack.Screen options={{headerShown: true}} name="TodaySchedule" component={TodaySchedule} />
     </Stack.Navigator>
   );
 }
