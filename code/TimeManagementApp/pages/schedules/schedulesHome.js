@@ -26,6 +26,7 @@ import {
 import styles from '../css/scheduleHomeStyles.js';
 
 import TodaySchedule from './todaySchedule.js';
+import CreateSchedule from './createSchedule.js';
 
 export default function SchedulesStack() {
   const Stack = createStackNavigator();
@@ -33,6 +34,7 @@ export default function SchedulesStack() {
     <Stack.Navigator initialRouteName="SchedulesHome">
       <Stack.Screen options={{headerShown: false}} name="SchedulesHome" component={SchedulesHome} />
       <Stack.Screen options={{headerShown: true}} name="TodaySchedule" component={TodaySchedule} />
+      <Stack.Screen options={{headerShown: true}} name="CreateSchedule" component={CreateSchedule} />
     </Stack.Navigator>
   );
 }
@@ -45,14 +47,14 @@ function SchedulesHome({ navigation }) {
           <Text style={styles.pageTitle}>Daily Schedules</Text>
         </View>
         <View style={styles.todayButton}>
-          <Button title="View today's schedule" onPress={() => {navigation.navigate("TodaySchedule")}}/>
+          <Button title="View today's schedule" onPress={() => {navigation.navigate("TodaySchedule")}} />
         </View>
         <View style={{marginTop: 10}}>
           <Text style={styles.tableTitle}>Current Schedules</Text>
         </View>
         {scheduleTable()}
         <View style={{marginTop: 10}}>
-          <Button title="Create Schedule" />
+          <Button title="Create Schedule" onPress={() => {navigation.navigate("CreateSchedule")}} />
         </View>
       </View>
     </View>

@@ -23,7 +23,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import styles from '../css/todaySchedule.js';
+import styles from '../css/todayScheduleStyles.js';
 
 export default function TodaySchedule() {
   return (
