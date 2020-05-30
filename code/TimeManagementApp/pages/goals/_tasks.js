@@ -120,7 +120,6 @@ function displayTasks(checklist, setChecklist) {
                 [
                   {text: 'Yes', onPress: () => {
                     setChecklist(deleteTask(checklist, checklist[i].name));
-                    alert("Task deleted");
                   }},
                   {text: 'No'}
                 ]

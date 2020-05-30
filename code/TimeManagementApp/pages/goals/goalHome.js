@@ -63,7 +63,7 @@ function GoalsHomeScreen({ navigation }) {
                     'Are you sure you wish to clear all goals?',
                     [
                       {text: 'No'},
-                      {text: 'Yes', onPress: () => { clearGoals(); alert("Goals Cleared!") }}
+                      {text: 'Yes', onPress: () => { clearGoals();}}
                     ]
                   )
                 }}></Button>
@@ -146,7 +146,7 @@ function goalsTable(navigation) {
                           "Are you sure you want to delete this goal?",
                           [
                             {text: 'No'},
-                            {text: 'Yes', onPress: () => { deleteGoal(item.key); alert("Goal Deleted") }}
+                            {text: 'Yes', onPress: () => { deleteGoal(item.key);}}
                           ]
                         )
                       }}/>
