@@ -24,15 +24,30 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import styles from '../css/createScheduleStyles.js';
+import {scheduleTable} from './scheduleElements.js';
 
 export default function CreateSchedule() {
     return(
-        <View style={styles.bodyContainer} >
-            <View style={styles.innerContainer}>
-                <View style={{alignItems: 'center'}}>
-                    <Text style={styles.pageTitle}>Create Schedule</Text>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+            <View style={styles.bodyContainer} >
+                <View style={styles.innerContainer}>
+                    <View style={{alignItems: 'center'}}>
+                        <Text style={styles.pageTitle}>Create Schedule</Text>
+                    </View>
+                    <View style={{alignItems: 'stretch'}}>
+                        <Text style={styles.formTag}>Name</Text>
+                        <TextInput style={styles.formInput} placeholder="Schedule Name (required)"></TextInput>
+                    </View>
+                    <View style={{alignItems: 'stretch'}}>
+                        <Text style={styles.formTag}>Description</Text>
+                        <TextInput style={styles.formInput} placeholder="Schedule Description (optional)"></TextInput>
+                    </View>
+                    <View style={styles.scheduleTable}>
+                        <Text style={styles.subheading}>Tasks (Click on time below to create task)</Text>
+                        {scheduleTable()}
+                    </View>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }

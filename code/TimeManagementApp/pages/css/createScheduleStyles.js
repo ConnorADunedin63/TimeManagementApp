@@ -17,13 +17,20 @@ export default StyleSheet.create({
     textDecorationLine: 'underline',
     color: 'white'
   },
-  todayButton: {
-    alignItems: 'stretch',
-    marginTop: 50
-  },
-  tableTitle: {
-    fontSize: 24,
-    textDecorationLine: 'underline',
+  formTag: {
     color: 'white'
+  },
+  formInput: {
+    marginTop: 10,
+    backgroundColor: 'white'
+  },
+  subheading: {
+    fontSize: 18,
+    color: 'white'
+  },
+  scheduleTable: {
+    alignItems: 'stretch', 
+    marginTop: 20, 
+    paddingBottom: 10
   }
 });
