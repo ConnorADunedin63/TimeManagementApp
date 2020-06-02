@@ -42,8 +42,14 @@ export default function createGoal({ navigation }) {
           <Text style={styles.sectionTitle}>Create Goal</Text>
         </View>
         <View style={styles.formContainer}>
-          <TextInput style={styles.formInput} placeholder="Name (required)" onChangeText={text => setName(text)}></TextInput>
-          <TextInput style={styles.formInput} placeholder="Description (optional)" onChangeText={text => setDescription(text)}></TextInput>
+          <TextInput 
+          style={styles.formInput} 
+          placeholder="Name (required)" 
+          onChangeText={text => setName(text)} />
+          <TextInput 
+          style={styles.formInput} 
+          placeholder="Description (optional)" 
+          onChangeText={text => setDescription(text)} />
           {datePicker(date, setDate)}
           {goalChecklist(checklist, setChecklist)}
           <View style={styles.createContainer}>

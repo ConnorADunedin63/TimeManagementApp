@@ -30,6 +30,8 @@ import { isWeekdays, isWeekends, isEveryday } from '../../logic/scheduleDays.js'
 export default function CreateSchedule() {
     // Initially no days are selected
     const [days, setDays] = useState([false, false, false, false, false, false, false]);
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -40,13 +42,22 @@ export default function CreateSchedule() {
                     </View>
                     <View style={{ alignItems: 'stretch' }}>
                         <Text style={styles.formTag}>Name</Text>
-                        <TextInput style={styles.formInput} placeholder="Schedule Name (required)"></TextInput>
+                        <TextInput 
+                        style={styles.formInput} 
+                        placeholder="Schedule Name (required)"
+                        onChangeText={text => {setName(text)}} />
                     </View>
                     <View style={{ alignItems: 'stretch' }}>
                         <Text style={styles.formTag}>Description</Text>
-                        <TextInput style={styles.formInput} placeholder="Schedule Description (optional)"></TextInput>
+                        <TextInput 
+                        style={styles.formInput} 
+                        placeholder="Schedule Description (optional)" 
+                        onChangeText={text => {setDescription(text)}} />
                     </View>
                     {scheduleType(days, setDays)}
+                    <View style={{alignItems: 'stretch', marginTop: 20}}>
+                        <Button title="Create Schedule" />
+                    </View>
                     <View style={styles.scheduleTable}>
                         <Text style={styles.subheading}>Tasks (Click on time below to create task)</Text>
                         {scheduleTable()}
