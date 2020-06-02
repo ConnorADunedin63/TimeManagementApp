@@ -46,7 +46,7 @@ export default function CreateSchedule() {
                         <Text style={styles.formTag}>Description</Text>
                         <TextInput style={styles.formInput} placeholder="Schedule Description (optional)"></TextInput>
                     </View>
-                    {scheduleType(days[0], setDays)}
+                    {scheduleType(days, setDays)}
                     <View style={styles.scheduleTable}>
                         <Text style={styles.subheading}>Tasks (Click on time below to create task)</Text>
                         {scheduleTable()}
@@ -101,12 +101,10 @@ function scheduleType(days, setDays) {
                     title="Monday" 
                     color={days[1] === true ? 'green' : ''}
                     onPress={() => {
-                        if(days[1] === false) {
-                            // Copy the old array as React state should not be modified directly
-                            const newDays = days.splice();
-                            newDays[1] = true; 
-                            setDays(newDays);
-                        }
+                        // Copy the old array as React state should not be modified directly
+                        const newDays = days.slice(0);
+                        newDays[1] = !newDays[1]; 
+                        setDays(newDays);
                     }}
                     />
                 </View>
@@ -115,12 +113,10 @@ function scheduleType(days, setDays) {
                     title="Tuesday" 
                     color={days[2] === true ? 'green' : ''}
                     onPress={() => {
-                        if(days[2] === false) {
-                            // Copy the old array as React state should not be modified directly
-                            const newDays = days.splice();
-                            newDays[2] = true; 
-                            setDays(newDays);
-                        }
+                        // Copy the old array as React state should not be modified directly
+                        const newDays = days.slice(0);
+                        newDays[2] = !newDays[2]; 
+                        setDays(newDays);
                     }}
                     />
                 </View>
@@ -129,12 +125,10 @@ function scheduleType(days, setDays) {
                     title="Wednesday" 
                     color={days[3] === true ? 'green' : ''}
                     onPress={() => {
-                        if(days[3] === false) {
-                            // Copy the old array as React state should not be modified directly
-                            const newDays = days.splice();
-                            newDays[3] = true; 
-                            setDays(newDays);
-                        }
+                        // Copy the old array as React state should not be modified directly
+                        const newDays = days.slice(0);
+                        newDays[3] = !newDays[3]; 
+                        setDays(newDays);
                     }}
                     />
                 </View>
@@ -145,12 +139,10 @@ function scheduleType(days, setDays) {
                     title="Thursday" 
                     color={days[4] === true ? 'green' : ''}
                     onPress={() => {
-                        if(days[4] === false) {
-                            // Copy the old array as React state should not be modified directly
-                            const newDays = days.splice();
-                            newDays[4] = true; 
-                            setDays(newDays);
-                        }
+                        // Copy the old array as React state should not be modified directly
+                        const newDays = days.slice(0);
+                        newDays[4] = !newDays[4]; 
+                        setDays(newDays);
                     }}
                     />
                 </View>
@@ -159,12 +151,10 @@ function scheduleType(days, setDays) {
                     title="Friday" 
                     color={days[5] === true ? 'green' : ''}
                     onPress={() => {
-                        if(days[5] === false) {
-                            // Copy the old array as React state should not be modified directly
-                            const newDays = days.splice();
-                            newDays[5] = true; 
-                            setDays(newDays);
-                        }
+                        // Copy the old array as React state should not be modified directly
+                        const newDays = days.slice(0);
+                        newDays[5] = !newDays[5]; 
+                        setDays(newDays);
                     }}
                     />
                 </View>
@@ -173,12 +163,10 @@ function scheduleType(days, setDays) {
                     title="Saturday" 
                     color={days[6] === true ? 'green' : ''}
                     onPress={() => {
-                        if(days[6] === false) {
-                            // Copy the old array as React state should not be modified directly
-                            const newDays = days.splice();
-                            newDays[6] = true; 
-                            setDays(newDays);
-                        }
+                        // Copy the old array as React state should not be modified directly
+                        const newDays = days.slice(0);
+                        newDays[6] = !newDays[6]; 
+                        setDays(newDays);
                     }}
                     />
                 </View>
@@ -189,12 +177,10 @@ function scheduleType(days, setDays) {
                     title="Sunday" 
                     color={days[0] === true ? 'green' : ''}
                     onPress={() => {
-                        if(days[0] === false) {
-                            // Copy the old array as React state should not be modified directly
-                            const newDays = days.splice();
-                            newDays[0] = true; 
-                            setDays(newDays);
-                        }
+                        // Copy the old array as React state should not be modified directly
+                        const newDays = days.slice(0);
+                        newDays[0] = !newDays[0]; 
+                        setDays(newDays);
                     }}
                     />
                 </View>
