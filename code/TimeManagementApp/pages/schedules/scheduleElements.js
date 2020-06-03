@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -27,77 +27,111 @@ import {
 import styles from '../css/scheduleElementsStyles.js';
 
 export function scheduleTable() {
-    return (
-        <>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>12am</Text>
+    const [hoursExpanded, setHoursExpanded] = useState(new Array(24).fill(false, 0, 23));
+    let hourContainers = [];
+
+    // For every hour in the day, create a new container
+    for(let i = 0; i < 24; i ++) {
+        const even = i % 2 === 0 ? true : false;
+        hourContainers.push(createHourContainer(i, hoursExpanded, setHoursExpanded,  even));
+    }
+    return hourContainers;
+}
+
+/**
+ * 
+ * @param hour: The hour that this container is referencing 
+ * @param hoursExpanded: An array of length 24 which states what hours are expanded 
+ * @param setHoursExpanded: A function for setting the hourExpanded array 
+ * @param even: Whether this hour container is expanded or not 
+ */
+function createHourContainer(hour, hoursExpanded, setHoursExpanded, even) {
+    let hourText = hour;
+    if(hour < 10) {
+        if(hour === 0) {
+            hourText = "12am";
+        }
+        else {
+            hourText = hour + "am";
+        }
+    }
+    else {
+        if(hour < 12) {
+            hourText = hour + "am";
+        }
+        else if(hour === 12) {
+            hourText = hour + "pm"; 
+        }
+        else {
+            hourText = (hour - 12) + "pm";
+        }
+    }
+
+    if(even === true) {
+        return (
+            <TouchableOpacity
+            key={hourText}
+            style={styles.hourContainerEven}
+            onPress={() => {
+                let newExpanded = hoursExpanded.slice(0);
+                newExpanded[hour] = !newExpanded[hour];
+                setHoursExpanded(newExpanded);
+            }}>
+                <Text style={styles.hourMark}>{hourText}</Text>
+                {minutes(hourText.slice(0, hourText.length - 2), hoursExpanded[hour], (hour >= 12 ? "pm" : "am") )}
             </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>1am</Text>
+        );
+    }
+    else {
+        return (
+            <TouchableOpacity
+            key={hourText} 
+            style={styles.hourContainer}
+            onPress={() => {
+                let newExpanded = hoursExpanded.slice(0);
+                newExpanded[hour] = !newExpanded[hour];
+                setHoursExpanded(newExpanded);
+            }}>
+                <Text style={styles.hourMark}>{hourText}</Text>
+                {minutes(hourText.slice(0, hourText.length - 2), hoursExpanded[hour], (hour >= 12 ? "pm" : "am") )}
             </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>2am</Text>
+        );
+    }
+}
+
+/**
+ * 
+ * @param hour: The hour that should be added to the beginning of minute text 
+ * @param expanded: If the minutes should be displayed or not 
+ * @param timeOfDay: Whether it is afternoon or morning
+ */
+function minutes(hour, expanded, timeOfDay) {
+    let minutes = [];
+    for(let i = 0; i < 60; i += 5) {
+        let minutesText = i;
+        if(i < 10) {
+            minutesText = hour + ":0" + minutesText + timeOfDay; 
+        }
+        else {
+            minutesText = hour + ":" + minutesText + timeOfDay;
+        }
+        minutes.push(
+            <TouchableOpacity 
+            key={minutesText}
+            style={styles.minutesContainer}>
+                <Text>{minutesText}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>3am</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>4am</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>5am</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>6am</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>7am</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>8am</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>9am</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>10am</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>11am</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>12pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>1pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>3pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>4pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>5pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>6pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>7pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>8pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>9pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainerEven}>
-                <Text>10pm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hourContainer}>
-                <Text>11pm</Text>
-            </TouchableOpacity>
-        </>
-    );
+        );
+    }
+
+    if(expanded === true) {
+        return(
+            <View style={{alignItems: 'stretch', marginLeft: 5}}>
+                {minutes}
+            </View>
+        );
+    }
+    else {
+        return null;
+    }
 }

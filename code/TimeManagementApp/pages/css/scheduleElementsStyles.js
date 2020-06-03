@@ -16,14 +16,24 @@ export default StyleSheet.create({
 
   },
   hourContainer: {
-    height: 100,
+    minHeight: 100,
     backgroundColor: 'white',
-    alignItems: 'center'
+    alignItems: 'stretch'
   },
   hourContainerEven: {
-    height: 100,
+    minHeight: 100,
     backgroundColor: 'grey',
+    alignItems: 'stretch'
+  },
+  hourMark: {
+    alignSelf: 'center'
+  },
+  minutesContainer: {
+    height: 40, 
     alignItems: 'center'
+  },
+  minuteMark: {
+    marginLeft: 5
   },
   pageTitle: {
     fontSize: 32,
