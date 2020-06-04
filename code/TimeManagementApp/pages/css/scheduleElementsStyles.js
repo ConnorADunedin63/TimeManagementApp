@@ -26,7 +26,8 @@ export default StyleSheet.create({
     alignItems: 'stretch'
   },
   hourMark: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginBottom: 20
   },
   minutesContainer: {
     height: 40, 

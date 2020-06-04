@@ -27,6 +27,7 @@ import styles from '../css/scheduleHomeStyles.js';
 
 import TodaySchedule from './todaySchedule.js';
 import CreateSchedule from './createSchedule.js';
+import CreateScheduleTask from './scheduleTask.js';
 
 export default function SchedulesStack() {
   const Stack = createStackNavigator();
@@ -35,6 +36,7 @@ export default function SchedulesStack() {
       <Stack.Screen options={{headerShown: false}} name="SchedulesHome" component={SchedulesHome} />
       <Stack.Screen options={{headerShown: true}} name="TodaySchedule" component={TodaySchedule} />
       <Stack.Screen options={{headerShown: true}} name="CreateSchedule" component={CreateSchedule} />
+      <Stack.Screen options={{headerShown: true}} name="CreateScheduleTask" component={CreateScheduleTask} />
     </Stack.Navigator>
   );
 }

@@ -27,7 +27,7 @@ import styles from '../css/createScheduleStyles.js';
 import { scheduleTable } from './scheduleElements.js';
 import { isWeekdays, isWeekends, isEveryday } from '../../logic/scheduleDays.js';
 
-export default function CreateSchedule() {
+export default function CreateSchedule({route, navigation}) {
     // Initially no days are selected
     const [days, setDays] = useState([false, false, false, false, false, false, false]);
     const [name, setName] = useState("");
@@ -55,12 +55,19 @@ export default function CreateSchedule() {
                         onChangeText={text => {setDescription(text)}} />
                     </View>
                     {scheduleType(days, setDays)}
+                    <View style={{alignItems: 'stretch', marginTop: 10}}>
+                        <Button 
+                        title="Preview Schedule" 
+                        />
+                    </View>
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
-                        <Button title="Create Schedule" />
+                        <Button 
+                        title="Create Schedule" 
+                        />
                     </View>
                     <View style={styles.scheduleTable}>
                         <Text style={styles.subheading}>Tasks (Click on time below to create task)</Text>
-                        {scheduleTable()}
+                        {scheduleTable(navigation)}
                     </View>
                 </View>
             </View>

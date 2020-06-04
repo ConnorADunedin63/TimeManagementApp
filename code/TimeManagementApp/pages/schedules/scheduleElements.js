@@ -26,14 +26,14 @@ import {
 
 import styles from '../css/scheduleElementsStyles.js';
 
-export function scheduleTable() {
+export function scheduleTable(navigation = null) {
     const [hoursExpanded, setHoursExpanded] = useState(new Array(24).fill(false, 0, 23));
     let hourContainers = [];
 
     // For every hour in the day, create a new container
     for(let i = 0; i < 24; i ++) {
         const even = i % 2 === 0 ? true : false;
-        hourContainers.push(createHourContainer(i, hoursExpanded, setHoursExpanded,  even));
+        hourContainers.push(createHourContainer(i, hoursExpanded, setHoursExpanded,  even, navigation));
     }
     return hourContainers;
 }
@@ -45,25 +45,25 @@ export function scheduleTable() {
  * @param setHoursExpanded: A function for setting the hourExpanded array 
  * @param even: Whether this hour container is expanded or not 
  */
-function createHourContainer(hour, hoursExpanded, setHoursExpanded, even) {
+function createHourContainer(hour, hoursExpanded, setHoursExpanded, even, navigation) {
     let hourText = hour;
     if(hour < 10) {
         if(hour === 0) {
-            hourText = "12am";
+            hourText = "12AM";
         }
         else {
-            hourText = hour + "am";
+            hourText = hour + "AM";
         }
     }
     else {
         if(hour < 12) {
-            hourText = hour + "am";
+            hourText = hour + "AM";
         }
         else if(hour === 12) {
-            hourText = hour + "pm"; 
+            hourText = hour + "PM"; 
         }
         else {
-            hourText = (hour - 12) + "pm";
+            hourText = (hour - 12) + "PM";
         }
     }
 
@@ -78,7 +78,7 @@ function createHourContainer(hour, hoursExpanded, setHoursExpanded, even) {
                 setHoursExpanded(newExpanded);
             }}>
                 <Text style={styles.hourMark}>{hourText}</Text>
-                {minutes(hourText.slice(0, hourText.length - 2), hoursExpanded[hour], (hour >= 12 ? "pm" : "am") )}
+                {minutes(hourText.slice(0, hourText.length - 2), hoursExpanded[hour], (hour >= 12 ? "PM" : "AM"), navigation )}
             </TouchableOpacity>
         );
     }
@@ -93,7 +93,7 @@ function createHourContainer(hour, hoursExpanded, setHoursExpanded, even) {
                 setHoursExpanded(newExpanded);
             }}>
                 <Text style={styles.hourMark}>{hourText}</Text>
-                {minutes(hourText.slice(0, hourText.length - 2), hoursExpanded[hour], (hour >= 12 ? "pm" : "am") )}
+                {minutes(hourText.slice(0, hourText.length - 2), hoursExpanded[hour], (hour >= 12 ? "PM" : "AM"), navigation )}
             </TouchableOpacity>
         );
     }
@@ -105,7 +105,7 @@ function createHourContainer(hour, hoursExpanded, setHoursExpanded, even) {
  * @param expanded: If the minutes should be displayed or not 
  * @param timeOfDay: Whether it is afternoon or morning
  */
-function minutes(hour, expanded, timeOfDay) {
+function minutes(hour, expanded, timeOfDay, navigation) {
     let minutes = [];
     for(let i = 0; i < 60; i += 5) {
         let minutesText = i;
@@ -118,7 +118,13 @@ function minutes(hour, expanded, timeOfDay) {
         minutes.push(
             <TouchableOpacity 
             key={minutesText}
-            style={styles.minutesContainer}>
+            style={styles.minutesContainer}
+            onPress={() => {
+                // If the navigation has been provided
+                if(navigation !== null) {
+                    navigation.navigate("CreateScheduleTask", {time: minutesText});
+                }
+            }}>
                 <Text>{minutesText}</Text>
             </TouchableOpacity>
         );
