@@ -25,7 +25,7 @@ import {
 
 import styles from '../css/createScheduleStyles.js';
 import { scheduleTable } from './scheduleElements.js';
-import { isWeekdays, isWeekends, isEveryday } from '../../logic/scheduleDays.js';
+import { isWeekdays, isWeekends, isEveryday } from '../../helpers/scheduleHelper.js';
 
 export default function CreateSchedule({route, navigation}) {
     // Initially no days are selected
