@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -24,6 +24,8 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import styles from '../css/scheduleHomeStyles.js';
+
+import {getSchedules} from '../../logic/schedules.js';
 
 import TodaySchedule from './todaySchedule.js';
 import CreateSchedule from './createSchedule.js';
@@ -63,10 +65,92 @@ function SchedulesHome({ navigation }) {
   );
 }
 
-function scheduleTable() {
-  return (
-    <View style={{backgroundColor: 'white', marginTop: 10}}>
-      <Text>Table goes here</Text>
-    </View>
-  );
+/**
+  Displays the schedules' table, shows the name and description.
+  The rows should be selectable to edit.
+*/
+function scheduleTable(navigation) {
+  const [schedules, setSchedules] = useState(null);
+  useEffect(() => {
+    async function setSchedulesState() {
+      let currentSchedules = await getSchedules();
+      await setSchedules(currentSchedules);
+    }
+
+    setSchedulesState();
+  }, [schedules]);
+
+  // This is a temporary loading screen while the goals are loaded from asynchronous storage
+  if(schedules === null) {
+    return(
+      <>
+        <ScrollView style={styles.tableContainer}>
+          <View style={styles.sectionTable}>
+            <View style={styles.tableRowEmpty}>
+              <Text>Loading...</Text>
+            </View>
+          </View>
+        </ScrollView>
+      </>
+    )
+  }
+  else if(schedules.length > 0) {
+    return(
+      <>
+        <ScrollView style={styles.tableContainer}>
+          <View style={styles.sectionTable}>
+            <View style={styles.tableHeader}>
+              <View style={styles.rowItem}>
+                <Text>Name</Text>
+              </View>
+              <View style={styles.rowItem}>
+                <Text>Due Date</Text>
+              </View>
+              <View style={styles.rowItem} />
+            </View>
+            {
+              schedules.map((item, index) => {
+                return (
+                  <TouchableOpacity style={index % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd}
+                  key={item.name}>
+                    <View style={styles.rowItem}>
+                      <Text>{item.name}</Text>
+                    </View>
+                    <View style={styles.deleteItem}>
+                      <Button title='Delete'
+                      color='red'
+                      onPress={() => {
+                        Alert.alert(
+                          "Delete This Goal?",
+                          "Are you sure you want to delete this schedule?",
+                          [
+                            {text: 'No'},
+                            {text: 'Yes', onPress: () => { deleteSchedule(item.name);}}
+                          ]
+                        )
+                      }}/>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })
+            }
+          </View>
+        </ScrollView>
+    </>
+    );
+  }
+  // No goals are present
+  else {
+    return(
+      <>
+        <ScrollView style={styles.tableContainer}>
+          <View style={styles.sectionTable}>
+            <View style={styles.tableRowEmpty}>
+              <Text>No Schedules to Display</Text>
+            </View>
+          </View>
+        </ScrollView>
+      </>
+    );
+  }
 }

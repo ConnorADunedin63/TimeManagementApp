@@ -38,6 +38,7 @@ export async function getGoals(filter) {
         }
         return jsonData;
       }
+      // No goals set, return an empty array
       else {
         return [];
       }
