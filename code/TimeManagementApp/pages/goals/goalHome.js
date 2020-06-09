@@ -129,7 +129,7 @@ function goalsTable(navigation) {
               goals.map((item, index) => {
                 return (
                   <TouchableOpacity style={index % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd}
-                  key={item.key} onPress={() => {navigation.navigate("Edit Goal", {goal: item})}}>
+                  key={item.key} onPress={() => {navigation.navigate("Edit Goal", {goal: JSON.stringify(item)})}}>
                     <View style={styles.rowItem}>
                       <Text>{item.name}</Text>
                     </View>
