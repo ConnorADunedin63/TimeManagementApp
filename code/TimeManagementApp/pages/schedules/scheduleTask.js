@@ -31,6 +31,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import styles from '../css/createScheduleTasksStyles.js';
 
 export default function CreateScheduleTask({ route, navigation }) {
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
     const [startTime, setStartTime] = useState(route.params.time);
     const [endTime, setEndTime] = useState(startTime);
     return (
