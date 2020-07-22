@@ -28,10 +28,11 @@ import { scheduleTable } from './scheduleElements.js';
 import { isWeekdays, isWeekends, isEveryday } from '../../helpers/scheduleHelper.js';
 
 export default function CreateSchedule({route, navigation}) {
-    // Initially no days are selected
-    const [days, setDays] = useState([false, false, false, false, false, false, false]);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
+    // Initially no days are selected
+    const [days, setDays] = useState([false, false, false, false, false, false, false]);
+    
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -61,7 +62,8 @@ export default function CreateSchedule({route, navigation}) {
                         />
                     </View>
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
-                        <Button 
+                        <Button
+                        disabled={name === "" ? true : false} 
                         title="Create Schedule" 
                         />
                     </View>

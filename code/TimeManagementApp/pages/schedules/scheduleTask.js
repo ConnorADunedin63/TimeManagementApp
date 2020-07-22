@@ -35,6 +35,9 @@ export default function CreateScheduleTask({ route, navigation }) {
     const [description, setDescription] = useState("");
     const [startTime, setStartTime] = useState(route.params.time);
     const [endTime, setEndTime] = useState(startTime);
+    // The current tasks in this schedule
+    const [tasks, setTasks] = useState([]);
+
     return (
         <View style={styles.bodyContainer}>
             <View style={styles.innerContainer}>
@@ -74,6 +77,7 @@ export default function CreateScheduleTask({ route, navigation }) {
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button
                         title="Create Schedule Task"
+                        disabled={name === "" ? true : false}
                         onPress={() => {
                             navigation.goBack();
                         }}
