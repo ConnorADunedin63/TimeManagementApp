@@ -33,7 +33,7 @@ export default function editGoal({ route, navigation }) {
   const goal = JSON.parse(route.params.goal);
   const [name, setName] = useState(goal.name);
   const [description, setDescription] = useState(goal.description);
-  const [date, setDate] = useState(goal.date);
+  const [date, setDate] = useState(new Date(goal.date));
   const [checklist, setChecklist] = useState(goal.checklist)
   // Initially the user is only viewing the goal
   const [editGoal, setEdit] = useState(false);
