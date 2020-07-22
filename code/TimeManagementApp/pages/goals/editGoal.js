@@ -20,17 +20,17 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 // Import stylesheet
-import styles from './css/editGoalStyles.js';
+import styles from '../css/editGoalStyles.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
 import { goalChecklist } from './_tasks.js';
 
-import { updateGoal, updateTask } from '../logic/goals.js';
-import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../helpers/timeHelper.js';
+import { updateGoal, updateTask } from '../../logic/goals.js';
+import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../../helpers/timeHelper.js';
 
 export default function editGoal({ route, navigation }) {
-  const goal = route.params.goal;
+  const goal = JSON.parse(route.params.goal);
   const [name, setName] = useState(goal.name);
   const [description, setDescription] = useState(goal.description);
   const [date, setDate] = useState(goal.date);

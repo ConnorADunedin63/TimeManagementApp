@@ -10,6 +10,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {
   Button,
   SafeAreaView,
@@ -30,20 +31,18 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import HomeScreen from './home.js';
-import CreateGoal from './createGoals.js';
-import EditGoal from './editGoal.js';
-
-const Stack = createStackNavigator();
+import GoalsStack from './goals/goalHome.js';
+import SchedulesStack from './schedules/schedulesHome.js';
 
 export default function App() {
+  const Drawer = createDrawerNavigator();
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen} />
-        <Stack.Screen name="Create Goal" component={CreateGoal} />
-        <Stack.Screen name="Edit Goal" component={EditGoal} />
-      </Stack.Navigator>
+      <Drawer.Navigator initialRouteName="Goals">
+        <Drawer.Screen name="Goals" component={GoalsStack} />
+        <Drawer.Screen name="Schedules" component={SchedulesStack} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }

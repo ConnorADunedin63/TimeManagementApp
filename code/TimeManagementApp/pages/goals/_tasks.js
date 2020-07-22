@@ -22,8 +22,8 @@ import {
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
-import { updateGoal, updateTask } from '../logic/goals.js';
-import { taskNotPresent, deleteTask } from '../logic/tasks.js';
+import { updateGoal, updateTask } from '../../logic/goals.js';
+import { taskNotPresent, deleteTask } from '../../logic/tasks.js';
 
 /**
   Returns the react components that are used to render the checklist
@@ -120,7 +120,6 @@ function displayTasks(checklist, setChecklist) {
                 [
                   {text: 'Yes', onPress: () => {
                     setChecklist(deleteTask(checklist, checklist[i].name));
-                    alert("Task deleted");
                   }},
                   {text: 'No'}
                 ]

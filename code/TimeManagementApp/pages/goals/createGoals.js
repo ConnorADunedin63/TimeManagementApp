@@ -20,14 +20,14 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 // Import stylesheet
-import styles from './css/createGoalsStyles.js';
+import styles from '../css/createGoalsStyles.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
 import { goalChecklist } from './_tasks.js';
 
-import { setGoals, updateTask } from '../logic/goals.js';
-import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../helpers/timeHelper.js';
+import { setGoals, updateTask } from '../../logic/goals.js';
+import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../../helpers/timeHelper.js';
 
 export default function createGoal({ navigation }) {
   const [name, setName] = useState('');
@@ -42,8 +42,14 @@ export default function createGoal({ navigation }) {
           <Text style={styles.sectionTitle}>Create Goal</Text>
         </View>
         <View style={styles.formContainer}>
-          <TextInput style={styles.formInput} placeholder="Name (required)" onChangeText={text => setName(text)}></TextInput>
-          <TextInput style={styles.formInput} placeholder="Description (optional)" onChangeText={text => setDescription(text)}></TextInput>
+          <TextInput 
+          style={styles.formInput} 
+          placeholder="Name (required)" 
+          onChangeText={text => setName(text)} />
+          <TextInput 
+          style={styles.formInput} 
+          placeholder="Description (optional)" 
+          onChangeText={text => setDescription(text)} />
           {datePicker(date, setDate)}
           {goalChecklist(checklist, setChecklist)}
           <View style={styles.createContainer}>

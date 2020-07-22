@@ -21,14 +21,30 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 // Import stylesheet
-import styles from './css/homeStyles.js';
+import styles from '../css/homeStyles.js';
 
-import { getGoals, clearGoals, deleteGoal } from '../logic/goals.js';
-import { convertTo12HourFormat, formatDate } from '../helpers/timeHelper.js';
+// Import pages
+import CreateGoal from './createGoals.js';
+import EditGoal from './editGoal.js';
 
-export default function HomeScreen({ navigation }) {
+import { getGoals, clearGoals, deleteGoal } from '../../logic/goals.js';
+import { convertTo12HourFormat, formatDate } from '../../helpers/timeHelper.js';
+
+export default function GoalsStack() {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen options={{headerShown: false}} name="Home" component={GoalsHomeScreen} />
+      <Stack.Screen name="Create Goal" component={CreateGoal} />
+      <Stack.Screen name="Edit Goal" component={EditGoal} />
+    </Stack.Navigator>
+  );
+}
+
+function GoalsHomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
         <View style={{flex: 8}}>
@@ -47,7 +63,7 @@ export default function HomeScreen({ navigation }) {
                     'Are you sure you wish to clear all goals?',
                     [
                       {text: 'No'},
-                      {text: 'Yes', onPress: () => { clearGoals(); alert("Goals Cleared!") }}
+                      {text: 'Yes', onPress: () => { clearGoals();}}
                     ]
                   )
                 }}></Button>
@@ -113,7 +129,7 @@ function goalsTable(navigation) {
               goals.map((item, index) => {
                 return (
                   <TouchableOpacity style={index % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd}
-                  key={item.key} onPress={() => {navigation.navigate("Edit Goal", {goal: item})}}>
+                  key={item.key} onPress={() => {navigation.navigate("Edit Goal", {goal: JSON.stringify(item)})}}>
                     <View style={styles.rowItem}>
                       <Text>{item.name}</Text>
                     </View>
@@ -130,7 +146,7 @@ function goalsTable(navigation) {
                           "Are you sure you want to delete this goal?",
                           [
                             {text: 'No'},
-                            {text: 'Yes', onPress: () => { deleteGoal(item.key); alert("Goal Deleted") }}
+                            {text: 'Yes', onPress: () => { deleteGoal(item.key);}}
                           ]
                         )
                       }}/>
