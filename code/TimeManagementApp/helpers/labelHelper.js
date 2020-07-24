@@ -12,6 +12,6 @@ export function getLabelColour(label) {
         case("study"):
             return "orange";
         default:
-            return "white"
+            return "black"
     }
 }
