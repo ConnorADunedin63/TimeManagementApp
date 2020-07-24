@@ -14,10 +14,12 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
 import {Picker} from '@react-native-community/picker';
+
 import { updateGoal, updateTask } from '../../logic/goals.js';
 import { taskNotPresent, deleteTask } from '../../logic/tasks.js';
+import { getLabelColour } from '../../helpers/labelHelper.js';
+
 
 /**
   Returns the react components that are used to render the checklist
@@ -143,13 +145,27 @@ export function labelPicker(label, setLabel, editGoal=true) {
         onValueChange={(itemValue, itemIndex) => {setLabel(itemValue)}}
         style={{backgroundColor: 'white'}}
         >
-          <Picker.Item label="None" value="none" color='black'/>
-          <Picker.Item label="Work" value="work" color='blue'/>
-          <Picker.Item label="Personal" value="personal" color='green'/>
-          <Picker.Item label="Study" value="study" color='orange'/>
-          <Picker.Item label="Relationship" value="relationship" color='pink'/>
+          {labelOptions()}
         </Picker>
       </View>
     </View>
   );
+}
+
+/**
+ * Function returns an array of Picker Items for the label selector.
+ * @returns: Array of Picker.Item
+ */
+function labelOptions() {
+  const currentLabels = ["None", "Work", "Personal", "Study"];
+  let items = [];
+
+  for(var i = 0; i < currentLabels.length; i ++) {
+    const value = currentLabels[i].toLowerCase();
+    items.push(
+      <Picker.Item key={value} label={currentLabels[i]} value={value} color={getLabelColour(value)}/>
+    );
+  }
+
+  return items;
 }
