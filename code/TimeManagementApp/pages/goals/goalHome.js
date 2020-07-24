@@ -32,6 +32,7 @@ import EditGoal from './editGoal.js';
 
 import { getGoals, clearGoals, deleteGoal } from '../../logic/goals.js';
 import { convertTo12HourFormat, formatDate } from '../../helpers/timeHelper.js';
+import { getLabelColour } from '../../helpers/labelHelper.js';
 
 export default function GoalsStack() {
   const Stack = createStackNavigator();
@@ -128,28 +129,30 @@ function goalsTable(navigation) {
             {
               goals.map((item, index) => {
                 return (
-                  <TouchableOpacity style={index % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd}
+                  <TouchableOpacity
                   key={item.key} onPress={() => {navigation.navigate("Edit Goal", {goal: JSON.stringify(item)})}}>
-                    <View style={styles.rowItem}>
-                      <Text>{item.name}</Text>
-                    </View>
-                    <View style={styles.rowItem}>
-                      <Text style={item.date === "N/A" ? {display: 'none'} : ''}>{convertTo12HourFormat(item.date)}</Text>
-                      <Text>{formatDate(item.date)}</Text>
-                    </View>
-                    <View style={styles.deleteItem}>
-                      <Button title='Delete'
-                      color='red'
-                      onPress={() => {
-                        Alert.alert(
-                          "Delete This Goal?",
-                          "Are you sure you want to delete this goal?",
-                          [
-                            {text: 'No'},
-                            {text: 'Yes', onPress: () => { deleteGoal(item.key);}}
-                          ]
-                        )
-                      }}/>
+                    <View style={[styles.tableRow, {backgroundColor: getLabelColour(item.label)}]} >
+                      <View style={styles.rowItem}>
+                        <Text>{item.name}</Text>
+                      </View>
+                      <View style={styles.rowItem}>
+                        <Text style={item.date === "N/A" ? {display: 'none'} : ''}>{convertTo12HourFormat(item.date)}</Text>
+                        <Text>{formatDate(item.date)}</Text>
+                      </View>
+                      <View style={styles.deleteItem}>
+                        <Button title='Delete'
+                        color='red'
+                        onPress={() => {
+                          Alert.alert(
+                            "Delete This Goal?",
+                            "Are you sure you want to delete this goal?",
+                            [
+                              {text: 'No'},
+                              {text: 'Yes', onPress: () => { deleteGoal(item.key);}}
+                            ]
+                          )
+                        }}/>
+                      </View>
                     </View>
                   </TouchableOpacity>
                 );
