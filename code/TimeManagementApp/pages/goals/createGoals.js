@@ -24,7 +24,7 @@ import styles from '../css/createGoalsStyles.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
-import { goalChecklist } from './_tasks.js';
+import { goalChecklist, labelPicker } from './_tasks.js';
 
 import { setGoals, updateTask } from '../../logic/goals.js';
 import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../../helpers/timeHelper.js';
@@ -33,6 +33,7 @@ export default function createGoal({ navigation }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
+  const [label, setLabel] = useState('none');
   const [checklist, setChecklist] = useState(null);
 
   return (
@@ -51,10 +52,11 @@ export default function createGoal({ navigation }) {
           placeholder="Description (optional)" 
           onChangeText={text => setDescription(text)} />
           {datePicker(date, setDate)}
+          {labelPicker(label, setLabel)}
           {goalChecklist(checklist, setChecklist)}
           <View style={styles.createContainer}>
             <Button title="Create Goal"
-            onPress={() => {setGoals(name, description, date, checklist); navigation.navigate('Home')}}
+            onPress={() => {setGoals(name, description, date, label, checklist); navigation.navigate('Home')}}
             disabled={name === '' ? true : false }></Button>
           </View>
         </View>
