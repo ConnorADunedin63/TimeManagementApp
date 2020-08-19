@@ -6,11 +6,11 @@
 export function getLabelColour(label) {
     switch(label) {
         case("work"):
-            return "blue";
+            return "rgba(0,0,150,0.7)";
         case("personal"):
-            return "green";
+            return "rgba(0,150,0,0.7)";
         case("study"):
-            return "orange";
+            return "rgba(150,0,0,0.7)";
         default:
             return "black"
     }
