@@ -23,7 +23,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import {convertTo12HourFormat} from '../../helpers/timeHelper.js';
+import {convertTo12HourFormat, getCompleteDate} from '../../helpers/timeHelper.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -33,10 +33,8 @@ import styles from '../css/createScheduleTasksStyles.js';
 export default function CreateScheduleTask({ route, navigation }) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [startTime, setStartTime] = useState(route.params.time);
+    const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(startTime);
-    // The current tasks in this schedule
-    const [tasks, setTasks] = useState([]);
 
     return (
         <View style={styles.bodyContainer}>
@@ -63,7 +61,7 @@ export default function CreateScheduleTask({ route, navigation }) {
                         <TextInput 
                         style={styles.formTimeInput}
                         editable={false} 
-                        defaultValue={startTime}/>
+                        defaultValue={getCompleteDate(startTime)}/>
                     </View>
                     {timePicker(startTime, setStartTime)}
                     <View style={{ alignItems: 'stretch' }}>
@@ -71,7 +69,7 @@ export default function CreateScheduleTask({ route, navigation }) {
                         <TextInput 
                         style={styles.formTimeInput}
                         editable={false} 
-                        defaultValue={endTime}/>
+                        defaultValue={getCompleteDate(endTime)}/>
                     </View>
                     {timePicker(endTime, setEndTime)}
                     <View style={{alignItems: 'stretch', marginTop: 20}}>

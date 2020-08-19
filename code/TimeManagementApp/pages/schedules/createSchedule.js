@@ -24,7 +24,6 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import styles from '../css/createScheduleStyles.js';
-import { scheduleTable } from './scheduleElements.js';
 import { isWeekdays, isWeekends, isEveryday } from '../../helpers/scheduleHelper.js';
 
 export default function CreateSchedule({route, navigation}) {
@@ -32,6 +31,7 @@ export default function CreateSchedule({route, navigation}) {
     const [description, setDescription] = useState("");
     // Initially no days are selected
     const [days, setDays] = useState([false, false, false, false, false, false, false]);
+    const [tasks, setTasks] = useState([]);
     
 
     return (
@@ -67,9 +67,11 @@ export default function CreateSchedule({route, navigation}) {
                         title="Create Schedule" 
                         />
                     </View>
-                    <View style={styles.scheduleTable}>
-                        <Text style={styles.subheading}>Tasks (Click on time below to create task)</Text>
-                        {scheduleTable(navigation)}
+                    <View style={{alignItems: 'stretch', marginTop: 20}}>
+                        <Button 
+                        title="Create Task"
+                        onPress={() => {navigation.navigate("CreateScheduleTask", {onGoBack: () => updateScheduleTasks})}} 
+                        />
                     </View>
                 </View>
             </View>
