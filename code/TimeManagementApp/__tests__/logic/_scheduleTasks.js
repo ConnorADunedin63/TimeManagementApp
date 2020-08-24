@@ -52,4 +52,31 @@ describe("addScheduleTask should", () => {
         expect(updatedTasks[0].startTime).toBe("01:00");
         expect(updatedTasks[0].endTime).toBe("01:30");
     });
+
+    it("returns a new JSON object with three elements, the new element should be in the middle.", () => {
+        let currentTasks = [
+            {
+                key: "Test task09:12",
+                name: "Test task",
+                description: "Test description",
+                startTime: "09:12",
+                endTime: "11:00"
+            },
+            {
+                key: "Test task15:00",
+                name: "Test task2",
+                description: "Test description2",
+                startTime: "15:00",
+                endTime: "17:30"
+            }
+        ];
+        let updatedTasks = addScheduleTask("Test task3", "Test description3", "13:00", "14:30", currentTasks);
+
+        expect(updatedTasks.length).toBe(3);
+        expect(updatedTasks[1].key).toBe("Test task313:00");
+        expect(updatedTasks[1].name).toBe("Test task3");
+        expect(updatedTasks[1].description).toBe("Test description3");
+        expect(updatedTasks[1].startTime).toBe("13:00");
+        expect(updatedTasks[1].endTime).toBe("14:30");
+    });
 });

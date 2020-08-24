@@ -77,7 +77,7 @@ export default function CreateScheduleTask({ route, navigation }) {
                         title="Create Schedule Task"
                         disabled={name === "" ? true : false}
                         onPress={() => {
-                            navigation.goBack();
+                            navigation.navigate("CreateSchedule", {task: {name: name, description: description, startTime: startTime, endTime: endTime}});
                         }}
                         />
                     </View>

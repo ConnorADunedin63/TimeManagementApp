@@ -25,6 +25,7 @@ import {
 
 import styles from '../css/createScheduleStyles.js';
 import { isWeekdays, isWeekends, isEveryday } from '../../helpers/scheduleHelper.js';
+import { addScheduleTask } from '../../logic/scheduleTasks.js';
 
 export default function CreateSchedule({route, navigation}) {
     const [name, setName] = useState("");
@@ -32,6 +33,15 @@ export default function CreateSchedule({route, navigation}) {
     // Initially no days are selected
     const [days, setDays] = useState([false, false, false, false, false, false, false]);
     const [tasks, setTasks] = useState([]);
+
+    console.log("This is a test");
+    console.log(route.params);
+    if(route.params !== undefined && route.params.task !== undefined) {
+        let task = route.params.task;
+        setTasks(addScheduleTask(task.name, task.description, task.startTime, task.endTime, tasks));
+        route.params = undefined;
+        console.log(tasks);
+    }
     
 
     return (
@@ -70,7 +80,7 @@ export default function CreateSchedule({route, navigation}) {
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button 
                         title="Create Task"
-                        onPress={() => {navigation.navigate("CreateScheduleTask", {onGoBack: () => updateScheduleTasks})}} 
+                        onPress={() => {navigation.navigate("CreateScheduleTask")}} 
                         />
                     </View>
                 </View>
