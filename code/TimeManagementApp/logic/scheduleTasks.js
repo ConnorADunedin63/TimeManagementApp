@@ -1,3 +1,5 @@
+import { compareTimes } from '../helpers/timeHelper.js';
+
 /**
  * Returns a new JSON object with the name, description, startTime and endTime
  * @param name: The name of the task 
@@ -28,18 +30,23 @@ export function addScheduleTask(name, description, startTime, endTime, currentTa
     // Add the task to the array of current tasks in the correct place
     let taskIndex = -1;
     for(let i = 0; i < currentTasks.length; i ++) {
-        let taskDate = new Date(currentTasks[i].startTime);
-        let newTaskDate = new Date(newTask.startTime);
 
         // New task is before the current task, record index and break
-        if(newTaskDate < taskDate) {
+        if(compareTimes(startTime, currentTasks[i].startTime) === 1) {
             taskIndex = i;
             break;
         }
     }
 
-    // Insert the new task at the given index
-    currentTasks.splice(taskIndex, 0, newTask);
+    // If the new task has the latest start tiem
+    if(taskIndex === -1) {
+        // Append to the end of the array
+        currentTasks.push(newTask);
+    }
+    else {
+        // Insert the new task at the given index
+        currentTasks.splice(taskIndex, 0, newTask);
+    }
 
     return currentTasks;
 }

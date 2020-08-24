@@ -1,4 +1,4 @@
-import { convertTo12HourFormat, formatDate, getLongTermGoals, getShortTermGoals, getOngoingGoals } from '../../helpers/timeHelper.js'
+import { convertTo12HourFormat, formatDate, getLongTermGoals, getShortTermGoals, getOngoingGoals, compareTimes } from '../../helpers/timeHelper.js'
 /**
   Tests for checking date formatting functions
 */
@@ -328,5 +328,32 @@ describe("ongoing goals filter", () => {
     ];
 
     expect(getOngoingGoals(goals).length).toBe(2);
+  });
+});
+
+describe("compareTimes function should", () => {
+  it("correctly return the correct integer when both times have different hours.", () => {
+    let time1 = "01:13";
+    let time2 = "13:13";
+    expect(compareTimes(time1, time2)).toBe(1);
+
+    time1 = "12:21";
+    time2 = "09:10";
+    expect(compareTimes(time1, time2)).toBe(-1);
+  });
+
+  it("correctly return the correct integer when both time have the same hours but different minutes.", () => {
+    let time1 = "09:01";
+    let time2 = "09:30";
+    expect(compareTimes(time1, time2)).toBe(1)
+
+    time1 = "13:13";
+    time2 = "13:05";
+    expect(compareTimes(time1, time2)).toBe(-1);
+  });
+
+  it("correctly return the correct integer when both times are the same.", () => {
+    let time1 = "08:25";
+    expect(compareTimes(time1, time1)).toBe(0);
   });
 });
