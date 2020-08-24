@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -34,15 +34,22 @@ export default function CreateSchedule({route, navigation}) {
     const [days, setDays] = useState([false, false, false, false, false, false, false]);
     const [tasks, setTasks] = useState([]);
 
-    console.log("This is a test");
-    console.log(route.params);
-    if(route.params !== undefined && route.params.task !== undefined) {
-        let task = route.params.task;
-        setTasks(addScheduleTask(task.name, task.description, task.startTime, task.endTime, tasks));
-        route.params = undefined;
-        console.log(tasks);
-    }
-    
+    useEffect(() => {
+        async function setTasksState() {
+            let currentTasks = [];
+            if(route.params !== undefined && route.params.updatedTasks !== undefined) {
+                console.log("Testing")
+                if(tasks.length !== JSON.parse(route.params.updatedTasks).length) {
+                    currentTasks = JSON.parse(route.params.updatedTasks);
+                }
+            }
+            await setTasks(currentTasks);
+        }
+        if(route.params !== undefined && route.params.updatedTasks) {
+            setTasksState();
+        }
+    }, [tasks]);
+    console.log(tasks);
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -80,7 +87,7 @@ export default function CreateSchedule({route, navigation}) {
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button 
                         title="Create Task"
-                        onPress={() => {navigation.navigate("CreateScheduleTask")}} 
+                        onPress={() => {navigation.navigate("CreateScheduleTask", {currentTasks: JSON.stringify(tasks)})}} 
                         />
                     </View>
                 </View>

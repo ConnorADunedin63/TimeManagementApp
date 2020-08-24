@@ -24,6 +24,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import {convertTo12HourFormat, getCompleteDate} from '../../helpers/timeHelper.js';
+import { addScheduleTask } from '../../logic/scheduleTasks.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -77,7 +78,8 @@ export default function CreateScheduleTask({ route, navigation }) {
                         title="Create Schedule Task"
                         disabled={name === "" ? true : false}
                         onPress={() => {
-                            navigation.navigate("CreateSchedule", {task: {name: name, description: description, startTime: startTime, endTime: endTime}});
+                            let updatedTasks = addScheduleTask(name, description, startTime, endTime, JSON.parse(route.params.currentTasks));
+                            navigation.navigate("CreateSchedule", {updatedTasks: JSON.stringify(updatedTasks)});
                         }}
                         />
                     </View>
