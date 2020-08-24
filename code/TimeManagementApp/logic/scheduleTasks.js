@@ -5,6 +5,7 @@
  * @param startTime: The start time 
  * @param endTime: The end time 
  * @param currentTasks: An array containing the current tasks
+ * @returns Array of JSON objects, that is the current tasks with the new task inserted in the correct position
  */
 function updateScheduleTasks(name, description, startTime, endTime, currentTasks) {
     const newTask = {

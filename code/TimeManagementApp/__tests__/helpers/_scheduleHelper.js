@@ -1,4 +1,4 @@
-import {isWeekdays, isWeekends, isEveryday} from '../../logic/scheduleDays.js'
+import {isWeekdays, isWeekends, isEveryday} from '../../helpers/scheduleHelper.js'
 
 describe("isWeekdays", () => {
     it("should return true when Monday to Friday are selected.", () => {
