@@ -74,9 +74,11 @@ export default function CreateSchedule({route, navigation}) {
                         onChangeText={text => {setDescription(text)}} />
                     </View>
                     {scheduleType(days, setDays)}
-                    <View style={{alignItems: 'stretch', marginTop: 10}}>
+                    {scheduleTaskTable(tasks, setTasks)}
+                    <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button 
-                        title="Preview Schedule" 
+                        title="Create Task"
+                        onPress={() => {navigation.navigate("CreateScheduleTask")}} 
                         />
                     </View>
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
@@ -85,18 +87,17 @@ export default function CreateSchedule({route, navigation}) {
                         title="Create Schedule" 
                         />
                     </View>
-                    <View style={{alignItems: 'stretch', marginTop: 20}}>
-                        <Button 
-                        title="Create Task"
-                        onPress={() => {navigation.navigate("CreateScheduleTask")}} 
-                        />
-                    </View>
                 </View>
             </View>
         </ScrollView>
     );
 }
 
+/**
+ * Returns a React Component for selecting days that the schedule should apply to.
+ * @param days: The days this schedule applies to 
+ * @param setDays: The setter for setting the active days 
+ */
 function scheduleType(days, setDays) {
     return (
         <>
@@ -227,4 +228,14 @@ function scheduleType(days, setDays) {
             </View>
         </>
     );
+}
+
+/**
+ * Returns a React Component which is a table containing the current tasks in the schedule.
+ * The table has four rows, name, start time, end time and a delete button.
+ * @param tasks: The tasks in the schedule 
+ * @param setTasks: The setter for setting the tasks 
+ */
+function scheduleTaskTable(tasks, setTasks) {
+    return <View />;
 }
