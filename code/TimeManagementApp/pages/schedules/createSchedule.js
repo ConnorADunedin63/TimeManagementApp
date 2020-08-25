@@ -32,23 +32,24 @@ export default function CreateSchedule({route, navigation}) {
     const [description, setDescription] = useState("");
     // Initially no days are selected
     const [days, setDays] = useState([false, false, false, false, false, false, false]);
+    const [newTask, setNewTask] = useState(null);
     const [tasks, setTasks] = useState([]);
 
+    if(route.params !== undefined && route.params.newTask !== undefined) {
+        setNewTask(JSON.parse(route.params.newTask));
+        route.params.newTask = undefined;
+    }
+
     useEffect(() => {
-        async function setTasksState() {
-            let currentTasks = [];
-            if(route.params !== undefined && route.params.updatedTasks !== undefined) {
-                console.log("Testing")
-                if(tasks.length !== JSON.parse(route.params.updatedTasks).length) {
-                    currentTasks = JSON.parse(route.params.updatedTasks);
-                }
-            }
-            await setTasks(currentTasks);
+        if(newTask !== null) {
+            let currentTasks = tasks;
+            currentTasks = addScheduleTask(newTask.name, newTask.description, newTask.startTime, newTask.endTime, tasks);
+            setTasks(currentTasks);
+            setNewTask(null);
         }
-        if(route.params !== undefined && route.params.updatedTasks) {
-            setTasksState();
-        }
-    }, [tasks]);
+
+    }, [newTask]);
+
     console.log(tasks);
 
     return (
@@ -87,7 +88,7 @@ export default function CreateSchedule({route, navigation}) {
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button 
                         title="Create Task"
-                        onPress={() => {navigation.navigate("CreateScheduleTask", {currentTasks: JSON.stringify(tasks)})}} 
+                        onPress={() => {navigation.navigate("CreateScheduleTask")}} 
                         />
                     </View>
                 </View>
