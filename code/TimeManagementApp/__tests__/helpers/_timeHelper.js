@@ -23,6 +23,11 @@ describe("12 hour format", () => {
     expect(convertTo12HourFormat(date)).toBe("12:10AM");
   });
 
+  it("should be returned for 12PM", () => {
+    const date = new Date("2016-05-13 12:10");
+    expect(convertTo12HourFormat(date)).toBe("12:10PM");
+  });
+
   it("should return \"N/A\" when passed something that is not a Date object", () => {
     expect(convertTo12HourFormat("This is not a date")).toBe("N/A");
   });

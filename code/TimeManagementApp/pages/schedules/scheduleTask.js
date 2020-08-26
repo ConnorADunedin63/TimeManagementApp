@@ -103,9 +103,10 @@ function timePicker(time, setTime) {
     const [mode, setMode] = useState('time');
 
     const onChange = (event, selectedDate) => {
+        console.log(selectedDate instanceof Date);
         const currentDate = selectedDate;
         setShow(Platform.OS === 'ios');
-        setTime(convertTo12HourFormat(new Date(selectedDate)));
+        setTime(selectedDate);
     };
 
     const showMode = currentMode => {

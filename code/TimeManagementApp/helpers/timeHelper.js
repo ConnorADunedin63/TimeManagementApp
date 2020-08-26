@@ -18,6 +18,9 @@ export function convertTo12HourFormat(date) {
       hours = hours - 12;
       pm = true;
     }
+    else if(hours === 12) {
+      pm = true;
+    }
 
     // Should translate 0 to 12
     if(hours == 0) {
