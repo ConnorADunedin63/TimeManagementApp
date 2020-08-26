@@ -1,4 +1,4 @@
-import { addScheduleTask } from '../../logic/scheduleTasks.js';
+import { addScheduleTask, deleteTask } from '../../logic/scheduleTasks.js';
 
 describe("addScheduleTask should", () => {
     it("return a new JSON array with one object when the array is empty.", () => {
@@ -79,4 +79,71 @@ describe("addScheduleTask should", () => {
         expect(updatedTasks[1].startTime).toBe("13:00");
         expect(updatedTasks[1].endTime).toBe("14:30");
     });
+});
+
+describe("delete tasks function should", () => {
+    it("return the array with the item removed when it is present.", () => {
+        let tasks = [
+            {
+                key: "Test task 107:00",
+                name: "Test task 1",
+                description: "Description 1",
+                startTime: "07:00",
+                endTime: "09:00"
+            },
+            {
+                key: "Test task 213:00",
+                name: "Test task 2",
+                description: "Description 2",
+                startTime: "13:00",
+                endTime: "15:00"
+            }
+        ];
+        
+        let expectedArray = deleteTask("Test task 213:00", tasks);
+
+        expect(expectedArray.length).toBe(1);
+        expect(expectedArray[0].key).toBe("Test task 107:00");
+    });
+
+    it("returns an empty array when there is only one element and that element is the one to remove", () => {
+        let tasks = [
+            {
+                key: "Test task 107:00",
+                name: "Test task 1",
+                description: "Description 1",
+                startTime: "07:00",
+                endTime: "09:00"
+            }
+        ];
+        
+        let expectedArray = deleteTask("Test task 107:00", tasks);
+
+        expect(expectedArray.length).toBe(0);
+    });
+
+    it("return array that is unchanged when there is no element with the given key", () => {
+        let tasks = [
+            {
+                key: "Test task 107:00",
+                name: "Test task 1",
+                description: "Description 1",
+                startTime: "07:00",
+                endTime: "09:00"
+            },
+            {
+                key: "Test task 213:00",
+                name: "Test task 2",
+                description: "Description 2",
+                startTime: "13:00",
+                endTime: "15:00"
+            }
+        ];
+        
+        let expectedArray = deleteTask("Invalid Key", tasks);
+
+        expect(expectedArray.length).toBe(2);
+        expect(expectedArray[0].key).toBe("Test task 107:00");
+        expect(expectedArray[1].key).toBe("Test task 213:00");
+    })
 });

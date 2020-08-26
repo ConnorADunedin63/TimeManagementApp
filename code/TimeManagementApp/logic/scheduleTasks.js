@@ -58,5 +58,17 @@ export function addScheduleTask(name, description, startTime, endTime, currentTa
  * @return The list of tasks with the task removed, should remain unchanged if task does not exist 
  */
 export function deleteTask(key, tasks) {
+    let removeIndex = -1;
+    for(let i = 0; i < tasks.length; i ++) {
+        if(tasks[i].key === key) {
+            removeIndex = i;
+            break;
+        }
+    }
 
+    if(removeIndex !== -1) {
+        tasks.splice(removeIndex, 1);
+    }
+
+    return tasks;
 }
