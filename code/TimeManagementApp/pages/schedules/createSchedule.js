@@ -13,7 +13,8 @@ import {
     StatusBar,
     Image,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 
 import {
@@ -26,7 +27,7 @@ import {
 
 import styles from '../css/createScheduleStyles.js';
 import { isWeekdays, isWeekends, isEveryday } from '../../helpers/scheduleHelper.js';
-import { addScheduleTask } from '../../logic/scheduleTasks.js';
+import { addScheduleTask, deleteTask } from '../../logic/scheduleTasks.js';
 
 export default function CreateSchedule({route, navigation}) {
     const [name, setName] = useState("");
@@ -49,9 +50,7 @@ export default function CreateSchedule({route, navigation}) {
             setNewTask(null);
         }
 
-    }, [newTask]);
-
-    console.log(tasks);
+    }, [newTask, tasks]);
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -275,10 +274,10 @@ function scheduleTaskTable(tasks, setTasks) {
                           onPress={() => {
                             Alert.alert(
                               "Delete This Schedule?",
-                              "Are you sure you want to delete this goal?",
+                              "Are you sure you want to delete this schedule?",
                               [
                                 {text: 'No'},
-                                {text: 'Yes', onPress: () => {}}
+                                {text: 'Yes', onPress: () => {setTasks(deleteTask(item.key, tasks))}}
                               ]
                             )
                           }}/>
