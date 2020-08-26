@@ -50,3 +50,13 @@ export function addScheduleTask(name, description, startTime, endTime, currentTa
 
     return currentTasks;
 }
+
+/**
+ * 
+ * @param key: The key of the task to be removed 
+ * @param tasks: The array of tasks the task should be deleted from
+ * @return The list of tasks with the task removed, should remain unchanged if task does not exist 
+ */
+export function deleteTask(key, tasks) {
+
+}

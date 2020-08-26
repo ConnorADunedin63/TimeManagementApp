@@ -48,6 +48,33 @@ export function convertTo12HourFormat(date) {
 }
 
 /**
+ * Gets the 24 hour time of the given date
+ * @param date: The date we wish to get the time of
+ * @return 24 hour time as a string in the format hh:mm 
+ */
+export function get24HourTime(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let time = "";
+
+  if(hours < 10) {
+    time += "0" + hours;
+  }
+  else {
+    time += hours;
+  }
+
+  if(minutes < 10) {
+    time += ":0" + minutes; 
+  }
+  else {
+    time += ":" + minutes;
+  }
+
+  return time;
+}
+
+/**
   Formats the date in the form dd/mm/yyyy
   params date: the Date object that should be used
   return String: a String in the form dd/mm/yyyy
@@ -234,7 +261,7 @@ export function getOngoingGoals(goals) {
 
 /**
  * Compares two time strings in 24 hour format and returns a integer value representing which time is greater
- * @param time1: The first time 
+ * @param time1: The first time
  * @param time2: The second time 
  * @returns -1 if time1 is greater than time2, 0 if time1 and time2 are the same and 1 if time2 is greater than time1
  */

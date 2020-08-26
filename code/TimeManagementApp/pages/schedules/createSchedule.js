@@ -13,6 +13,7 @@ import {
     StatusBar,
     Image,
     TextInput,
+    TouchableOpacity
 } from 'react-native';
 
 import {
@@ -100,8 +101,8 @@ export default function CreateSchedule({route, navigation}) {
  */
 function scheduleType(days, setDays) {
     return (
-        <>
-            <View style={{ alignItems: 'stretch' }}>
+        <View style={{marginBottom: 10}}>
+            <View style={{ alignItems: 'stretch'}}>
                 <Text style={styles.formTag}>Days</Text>
             </View>
             <View style={{ alignItems: 'flex-start', flexDirection: 'row' }}>
@@ -226,7 +227,7 @@ function scheduleType(days, setDays) {
                     />
                 </View>
             </View>
-        </>
+        </View>
     );
 }
 
@@ -237,5 +238,72 @@ function scheduleType(days, setDays) {
  * @param setTasks: The setter for setting the tasks 
  */
 function scheduleTaskTable(tasks, setTasks) {
-    return <View />;
+    if(tasks.length > 0) {
+        return(
+          <>
+            <ScrollView style={styles.tableContainer}>
+              <View style={styles.sectionTable}>
+                <View style={styles.tableHeader}>
+                  <View style={styles.rowItem}>
+                    <Text>Name</Text>
+                  </View>
+                  <View style={styles.rowItem}>
+                    <Text>Start Time</Text>
+                  </View>
+                  <View style={styles.rowItem}>
+                    <Text>End Time</Text>
+                  </View>
+                  <View style={styles.rowItem} />
+                </View>
+                {
+                  tasks.map((item, index) => {
+                    return (
+                      <TouchableOpacity style={index % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd}
+                      key={item.key}>
+                        <View style={styles.rowItem}>
+                          <Text>{item.name}</Text>
+                        </View>
+                        <View style={styles.rowItem}>
+                          <Text>{item.startTime}</Text>
+                        </View>
+                        <View style={styles.rowItem}>
+                          <Text>{item.endTime}</Text>
+                        </View>
+                        <View style={styles.deleteItem}>
+                          <Button title='Delete'
+                          color='red'
+                          onPress={() => {
+                            Alert.alert(
+                              "Delete This Schedule?",
+                              "Are you sure you want to delete this goal?",
+                              [
+                                {text: 'No'},
+                                {text: 'Yes', onPress: () => {}}
+                              ]
+                            )
+                          }}/>
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  })
+                }
+              </View>
+            </ScrollView>
+        </>
+        );
+      }
+      // No goals are present
+      else {
+        return(
+          <>
+            <ScrollView style={styles.tableContainer}>
+              <View style={styles.sectionTable}>
+                <View style={styles.tableRowEmpty}>
+                  <Text>No Tasks to Display</Text>
+                </View>
+              </View>
+            </ScrollView>
+          </>
+        );
+      }
 }

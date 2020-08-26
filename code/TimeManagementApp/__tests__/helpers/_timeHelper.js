@@ -1,4 +1,4 @@
-import { convertTo12HourFormat, formatDate, getLongTermGoals, getShortTermGoals, getOngoingGoals, compareTimes } from '../../helpers/timeHelper.js'
+import { convertTo12HourFormat, get24HourTime, formatDate, getLongTermGoals, getShortTermGoals, getOngoingGoals, compareTimes } from '../../helpers/timeHelper.js'
 /**
   Tests for checking date formatting functions
 */
@@ -30,6 +30,18 @@ describe("12 hour format", () => {
   it("should return \"N/A\" when passed null", () => {
     expect(convertTo12HourFormat(null)).toBe("N/A");
   });
+});
+
+describe("24 hour format should", () => {
+  it("return the correct 24 hour time when date has a time in the am.", () => {
+    const date = new Date("2011-01-01 09:17");
+    expect(get24HourTime(date)).toBe("09:17");
+  });
+
+  it("return the correct 24 hour time when date has a time in the pm.", () => {
+    const date = new Date("2011-01-01 15:07");
+    expect(get24HourTime(date)).toBe("15:07");
+  })
 });
 
 describe("date format", () => {
