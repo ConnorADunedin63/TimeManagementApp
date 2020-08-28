@@ -83,7 +83,7 @@ export default function CreateSchedule({route, navigation}) {
                     </View>
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button
-                        disabled={!validSchedule(name, days)} 
+                        disabled={!validSchedule(name, days, tasks)} 
                         title="Create Schedule" 
                         />
                     </View>
@@ -314,11 +314,15 @@ function scheduleTaskTable(tasks, setTasks) {
  * 
  * @param name: The name of the schedule 
  * @param days: The days the schedule applies to
+ * @param tasks: The current tasks in the schedule
  * @returns true if the schedule is valid, false otherwise 
  */
-function validSchedule(name, days) {
+function validSchedule(name, days, tasks) {
   // Schedule name cannot be blank
   if(name === "") {
+    return false;
+  }
+  if(tasks.length === 0) {
     return false;
   }
 
