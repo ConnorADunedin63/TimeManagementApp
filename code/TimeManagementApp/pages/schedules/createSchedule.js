@@ -83,7 +83,7 @@ export default function CreateSchedule({route, navigation}) {
                     </View>
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button
-                        disabled={name === "" ? true : false} 
+                        disabled={!validSchedule(name, days)} 
                         title="Create Schedule" 
                         />
                     </View>
@@ -277,7 +277,10 @@ function scheduleTaskTable(tasks, setTasks) {
                               "Are you sure you want to delete this schedule?",
                               [
                                 {text: 'No'},
-                                {text: 'Yes', onPress: () => {setTasks(deleteTask(item.key, tasks))}}
+                                {text: 'Yes', onPress: () => {
+                                  setTasks([]);
+                                  setTasks(deleteTask(item.key, tasks));
+                                }}
                               ]
                             )
                           }}/>
@@ -305,4 +308,27 @@ function scheduleTaskTable(tasks, setTasks) {
           </>
         );
       }
+}
+
+/**
+ * 
+ * @param name: The name of the schedule 
+ * @param days: The days the schedule applies to
+ * @returns true if the schedule is valid, false otherwise 
+ */
+function validSchedule(name, days) {
+  // Schedule name cannot be blank
+  if(name === "") {
+    return false;
+  }
+
+  for(let i = 0; i < days.length; i ++) {
+    // A day is selected
+    if(days[i] === true) {
+      return true
+    }
+  }
+
+  // No days selected
+  return false;
 }
