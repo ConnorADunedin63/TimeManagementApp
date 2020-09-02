@@ -13,6 +13,7 @@ export async function getSchedules() {
                 let transformedSchedule = {
                     name: record.name,
                     description: record.description,
+                    days: record.days,
                     tasks: record.tasks,
                     key: record.key
                 };
@@ -35,9 +36,10 @@ export async function getSchedules() {
  * Adds a new schedule to the list of currently stored schedules
  * @param name: The name of the schedule 
  * @param description: The description of the schedule 
+ * @param days: The days a schedule is active on
  * @param tasks: A json list of tasks, each task should have a name, description, start time and end time 
  */
-export async function setSchedules(name, description, tasks) {
+export async function setSchedules(name, description, days, tasks) {
     let currentSchedules = getSchedules();
     // The schedule name should be unique
     for(let i = 0; i < currentSchedules.length; i ++) {
@@ -49,6 +51,7 @@ export async function setSchedules(name, description, tasks) {
     let newSchedule = {
         name: name,
         description: description,
+        days: days,
         tasks: tasks
     };
 
@@ -59,5 +62,32 @@ export async function setSchedules(name, description, tasks) {
     }
     catch(e) {
         console.log("The following error has occured while saving schedule: " + e);
+    }
+}
+
+/**
+ * Removes the schedule with the given key if present.
+ * @param key: The key of the schedule that should be removed
+ * @returns The schedules with the schedule with the given key removed, schedules shouldn't change if key can't be found 
+ */
+export async function deleteSchedule(key) {
+    let currentSchedules = await getSchedules();
+    let scheduleIndex = -1;
+
+    for(let i = 0; i < currentSchedules.length; i ++) {
+        if(currentSchedules[i].key.localCompare(key) === 0) {
+            scheduleIndex = i;
+            break;
+        }
+    }
+
+    if(scheduleIndex !== -1) {
+        currentSchedules.splice(scheduleIndex, 1);
+        try {
+            await AsyncStorage.setItem("@schedules", currentSchedules);
+        }
+        catch(e) {
+            console.log("The following error has occured while removing schedule: " + e);
+        }
     }
 }
