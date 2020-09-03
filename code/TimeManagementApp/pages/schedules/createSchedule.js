@@ -17,17 +17,11 @@ import {
     Alert
 } from 'react-native';
 
-import {
-    Header,
-    LearnMoreLinks,
-    Colors,
-    DebugInstructions,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import styles from '../css/createScheduleStyles.js';
 import { isWeekdays, isWeekends, isEveryday } from '../../helpers/scheduleHelper.js';
+import { setSchedules, getSchedules } from '../../logic/schedules.js';
 import { addScheduleTask, deleteTask } from '../../logic/scheduleTasks.js';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function CreateSchedule({route, navigation}) {
     const [name, setName] = useState("");
@@ -83,6 +77,10 @@ export default function CreateSchedule({route, navigation}) {
                     </View>
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button
+                        onPress={() => {
+                          setSchedules(name, description, days, tasks);
+                          navigation.goBack();
+                        }}
                         disabled={!validSchedule(name, days, tasks)} 
                         title="Create Schedule" 
                         />

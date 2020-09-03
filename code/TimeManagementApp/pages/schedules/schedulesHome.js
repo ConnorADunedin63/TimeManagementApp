@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {
+  Alert,
   Button,
   SafeAreaView,
   StyleSheet,
@@ -13,19 +14,12 @@ import {
   StatusBar,
   Image,
   TextInput,
+  TouchableOpacity
 } from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import styles from '../css/scheduleHomeStyles.js';
 
-import {getSchedules} from '../../logic/schedules.js';
+import {getSchedules, deleteSchedule} from '../../logic/schedules.js';
 
 import TodaySchedule from './todaySchedule.js';
 import CreateSchedule from './createSchedule.js';
@@ -56,7 +50,7 @@ function SchedulesHome({ navigation }) {
         <View style={{marginTop: 10}}>
           <Text style={styles.tableTitle}>Current Schedules</Text>
         </View>
-        {scheduleTable()}
+        {schedulesTable(navigation)}
         <View style={{marginTop: 10}}>
           <Button title="Create Schedule" onPress={() => {navigation.navigate("CreateSchedule")}} />
         </View>
@@ -66,25 +60,26 @@ function SchedulesHome({ navigation }) {
 }
 
 /**
-  Displays the schedules' table, shows the name and description.
+  Displays the goals table, shows the name and description.
   The rows should be selectable to edit.
 */
-function scheduleTable(navigation) {
+function schedulesTable(navigation) {
   const [schedules, setSchedules] = useState(null);
+
   useEffect(() => {
     async function setSchedulesState() {
       let currentSchedules = await getSchedules();
-      await setSchedules(currentSchedules);
+      setSchedules(currentSchedules);
     }
 
-    setSchedulesState();
+    setSchedulesState()
   }, [schedules]);
 
   // This is a temporary loading screen while the goals are loaded from asynchronous storage
-  if(schedules === null) {
+  if(schedules === null || schedules === undefined) {
     return(
       <>
-        <ScrollView style={styles.tableContainer}>
+        <ScrollView>
           <View style={styles.sectionTable}>
             <View style={styles.tableRowEmpty}>
               <Text>Loading...</Text>
@@ -97,7 +92,7 @@ function scheduleTable(navigation) {
   else if(schedules.length > 0) {
     return(
       <>
-        <ScrollView style={styles.tableContainer}>
+        <ScrollView>
           <View style={styles.sectionTable}>
             <View style={styles.tableHeader}>
               <View style={styles.rowItem}>
@@ -121,7 +116,7 @@ function scheduleTable(navigation) {
                       color='red'
                       onPress={() => {
                         Alert.alert(
-                          "Delete This Goal?",
+                          "Delete This Schedule?",
                           "Are you sure you want to delete this schedule?",
                           [
                             {text: 'No'},
@@ -139,11 +134,11 @@ function scheduleTable(navigation) {
     </>
     );
   }
-  // No goals are present
+  // No schedules are present
   else {
     return(
       <>
-        <ScrollView style={styles.tableContainer}>
+        <ScrollView>
           <View style={styles.sectionTable}>
             <View style={styles.tableRowEmpty}>
               <Text>No Schedules to Display</Text>
