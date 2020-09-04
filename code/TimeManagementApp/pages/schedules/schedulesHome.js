@@ -94,15 +94,6 @@ function schedulesTable(navigation) {
       <>
         <ScrollView>
           <View style={styles.sectionTable}>
-            <View style={styles.tableHeader}>
-              <View style={styles.rowItem}>
-                <Text>Name</Text>
-              </View>
-              <View style={styles.rowItem}>
-                <Text>Due Date</Text>
-              </View>
-              <View style={styles.rowItem} />
-            </View>
             {
               schedules.map((item, index) => {
                 return (

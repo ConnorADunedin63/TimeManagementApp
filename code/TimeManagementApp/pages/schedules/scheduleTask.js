@@ -105,7 +105,12 @@ function timePicker(time, setTime) {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setShow(Platform.OS === 'ios');
-        setTime(selectedDate);
+        if(selectedDate instanceof Date) {
+            setTime(selectedDate);
+        }
+        else {
+            setTime(new Date());
+        }
     };
 
     const showMode = currentMode => {
