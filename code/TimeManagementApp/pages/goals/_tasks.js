@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import {
   Button,
-  SafeAreaView,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Image,
   TextInput,
-  Platform,
   Alert
 } from 'react-native';
 
@@ -19,11 +14,12 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {Picker} from '@react-native-community/picker';
 
-import DateTimePicker from '@react-native-community/datetimepicker';
-import {NavigationContainer} from '@react-navigation/native';
 import { updateGoal, updateTask } from '../../logic/goals.js';
 import { taskNotPresent, deleteTask } from '../../logic/tasks.js';
+import { getLabelColour } from '../../helpers/labelHelper.js';
+
 
 /**
   Returns the react components that are used to render the checklist
@@ -131,4 +127,45 @@ function displayTasks(checklist, setChecklist) {
     }
   }
   return checklistItems;
+}
+
+/**
+ * Function returns the label picker component for assigning labels to goals
+ * @param label: The current goal label, is blank string if no label is selected  
+ * @param setLabel: The setLabel function for setting the goal label 
+ */
+export function labelPicker(label, setLabel, editGoal=true) {
+  return(
+    <View>
+      <View style={{marginTop: 10}}>
+        <Text style={{color: 'white'}}>Label</Text>
+        <Picker
+        enabled={editGoal}
+        selectedValue={label}
+        onValueChange={(itemValue, itemIndex) => {setLabel(itemValue)}}
+        style={{backgroundColor: 'white'}}
+        >
+          {labelOptions()}
+        </Picker>
+      </View>
+    </View>
+  );
+}
+
+/**
+ * Function returns an array of Picker Items for the label selector.
+ * @returns: Array of Picker.Item
+ */
+function labelOptions() {
+  const currentLabels = ["None", "Work", "Personal", "Study"];
+  let items = [];
+
+  for(var i = 0; i < currentLabels.length; i ++) {
+    const value = currentLabels[i].toLowerCase();
+    items.push(
+      <Picker.Item key={value} label={currentLabels[i]} value={value} color={getLabelColour(value)}/>
+    );
+  }
+
+  return items;
 }

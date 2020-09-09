@@ -58,15 +58,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
-  tableRowEven: {
+  tableRow: {
     height: 50,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
-  },
-  tableRowOdd: {
-    height: 50,
-    backgroundColor: '#D3D3D3',
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'flex-start'

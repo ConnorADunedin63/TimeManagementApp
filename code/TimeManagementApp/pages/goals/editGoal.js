@@ -1,30 +1,19 @@
 import React, { useState } from 'react';
 import {
   Button,
-  SafeAreaView,
   ScrollView,
   View,
   Text,
-  StatusBar,
-  Image,
   TextInput,
   Platform
 } from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 // Import stylesheet
 import styles from '../css/editGoalStyles.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {NavigationContainer} from '@react-navigation/native';
-import { goalChecklist } from './_tasks.js';
+import { goalChecklist, labelPicker } from './_tasks.js';
 
 import { updateGoal, updateTask } from '../../logic/goals.js';
 import { getDayOfWeek, convertTo12HourFormat, getMonth, getCompleteDate } from '../../helpers/timeHelper.js';
@@ -33,7 +22,8 @@ export default function editGoal({ route, navigation }) {
   const goal = JSON.parse(route.params.goal);
   const [name, setName] = useState(goal.name);
   const [description, setDescription] = useState(goal.description);
-  const [date, setDate] = useState(goal.date);
+  const [date, setDate] = useState(new Date(goal.date));
+  const [label, setLabel] = useState(goal.label === undefined ? 'none' : goal.label);
   const [checklist, setChecklist] = useState(goal.checklist)
   // Initially the user is only viewing the goal
   const [editGoal, setEdit] = useState(false);
@@ -64,10 +54,11 @@ export default function editGoal({ route, navigation }) {
           editable={editGoal}
           onChangeText={text => setDescription(text)}/>
           {datePicker(date, setDate, editGoal)}
+          {labelPicker(label, setLabel, editGoal)}
           {goalChecklist(checklist, setChecklist, editGoal)}
           <View style={styles.createContainer}>
             <Button title="Edit Goal"
-            onPress={() => {updateGoal(name, description, date, checklist, goal.key); navigation.navigate('Home')}}
+            onPress={() => {updateGoal(name, description, date, label, checklist, goal.key); navigation.navigate('Home')}}
             disabled={name === '' ? true : false }></Button>
           </View>
         </View>

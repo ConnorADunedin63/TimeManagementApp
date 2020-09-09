@@ -20,6 +20,7 @@ export async function getGoals(filter) {
           name: record.name,
           description: record.description,
           date: date,
+          label: record.label,
           checklist: record.checklist,
           key: record.key
         };
@@ -57,10 +58,11 @@ export async function getGoals(filter) {
   param name: The name of the goal
   param description: The description of the goal
   param date: The due date of the goal
+  param label: The label category
   param checklist: The array of tasks that need to be completed
 */
-export async function setGoals(name, description, date, checklist) {
-  // Gets the current goals =
+export async function setGoals(name, description, date, label, checklist) {
+  // Gets the current goals 
   var currentGoals = await getGoals();
 
   // key is required for the home screen as each list item should have a unique key
@@ -68,6 +70,7 @@ export async function setGoals(name, description, date, checklist) {
     name: name,
     description: description,
     date: date,
+    label: label,
     checklist: checklist,
     key: name + date
   };
@@ -104,11 +107,12 @@ export async function clearGoals() {
   param name: The name of the goal
   param description: The description of the goal
   param date: The date of the goal
+  param label: The category label of the goal
   param checklist: The checklist of tasks that need to be complete
   param key: The unique key for the goal that should be updated
   return none: Function returns nothing, updated goals are sent to asynchronous storage
 */
-export async function updateGoal(name, description, date, checklist, key) {
+export async function updateGoal(name, description, date, label, checklist, key) {
   // Gets the current goals
   var currentGoals = await getGoals();
 
@@ -119,6 +123,7 @@ export async function updateGoal(name, description, date, checklist, key) {
       currentGoals[i].name = name;
       currentGoals[i].description = description;
       currentGoals[i].date = date;
+      currentGoals[i].label = label;
       currentGoals[i].checklist = checklist
       break;
     }
