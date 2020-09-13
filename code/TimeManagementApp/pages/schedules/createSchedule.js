@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -13,26 +13,37 @@ import {
     StatusBar,
     Image,
     TextInput,
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 
-import {
-    Header,
-    LearnMoreLinks,
-    Colors,
-    DebugInstructions,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import styles from '../css/createScheduleStyles.js';
-import { scheduleTable } from './scheduleElements.js';
 import { isWeekdays, isWeekends, isEveryday } from '../../helpers/scheduleHelper.js';
+import { setSchedules, getSchedules } from '../../logic/schedules.js';
+import { addScheduleTask, deleteTask } from '../../logic/scheduleTasks.js';
 
 export default function CreateSchedule({route, navigation}) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     // Initially no days are selected
     const [days, setDays] = useState([false, false, false, false, false, false, false]);
-    
+    const [newTask, setNewTask] = useState(null);
+    const [tasks, setTasks] = useState([]);
+
+    if(route.params !== undefined && route.params.newTask !== undefined) {
+        setNewTask(JSON.parse(route.params.newTask));
+        route.params.newTask = undefined;
+    }
+
+    useEffect(() => {
+        if(newTask !== null) {
+            let currentTasks = tasks;
+            currentTasks = addScheduleTask(newTask.name, newTask.description, newTask.startTime, newTask.endTime, tasks);
+            setTasks(currentTasks);
+            setNewTask(null);
+        }
+
+    }, [newTask, tasks]);
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -56,20 +67,22 @@ export default function CreateSchedule({route, navigation}) {
                         onChangeText={text => {setDescription(text)}} />
                     </View>
                     {scheduleType(days, setDays)}
-                    <View style={{alignItems: 'stretch', marginTop: 10}}>
+                    {scheduleTaskTable(tasks, setTasks)}
+                    <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button 
-                        title="Preview Schedule" 
+                        title="Create Task"
+                        onPress={() => {navigation.navigate("CreateScheduleTask")}} 
                         />
                     </View>
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
                         <Button
-                        disabled={name === "" ? true : false} 
+                        onPress={() => {
+                          setSchedules(name, description, days, tasks);
+                          navigation.goBack();
+                        }}
+                        disabled={!validSchedule(name, days, tasks)} 
                         title="Create Schedule" 
                         />
-                    </View>
-                    <View style={styles.scheduleTable}>
-                        <Text style={styles.subheading}>Tasks (Click on time below to create task)</Text>
-                        {scheduleTable(navigation)}
                     </View>
                 </View>
             </View>
@@ -77,10 +90,15 @@ export default function CreateSchedule({route, navigation}) {
     );
 }
 
+/**
+ * Returns a React Component for selecting days that the schedule should apply to.
+ * @param days: The days this schedule applies to 
+ * @param setDays: The setter for setting the active days 
+ */
 function scheduleType(days, setDays) {
     return (
-        <>
-            <View style={{ alignItems: 'stretch' }}>
+        <View style={{marginBottom: 10}}>
+            <View style={{ alignItems: 'stretch'}}>
                 <Text style={styles.formTag}>Days</Text>
             </View>
             <View style={{ alignItems: 'flex-start', flexDirection: 'row' }}>
@@ -205,6 +223,113 @@ function scheduleType(days, setDays) {
                     />
                 </View>
             </View>
-        </>
+        </View>
     );
+}
+
+/**
+ * Returns a React Component which is a table containing the current tasks in the schedule.
+ * The table has four rows, name, start time, end time and a delete button.
+ * @param tasks: The tasks in the schedule 
+ * @param setTasks: The setter for setting the tasks 
+ */
+function scheduleTaskTable(tasks, setTasks) {
+    if(tasks.length > 0) {
+        return(
+          <>
+            <ScrollView style={styles.tableContainer}>
+              <View style={styles.sectionTable}>
+                <View style={styles.tableHeader}>
+                  <View style={styles.rowItem}>
+                    <Text>Name</Text>
+                  </View>
+                  <View style={styles.rowItem}>
+                    <Text>Start Time</Text>
+                  </View>
+                  <View style={styles.rowItem}>
+                    <Text>End Time</Text>
+                  </View>
+                  <View style={styles.rowItem} />
+                </View>
+                {
+                  tasks.map((item, index) => {
+                    return (
+                      <TouchableOpacity style={index % 2 == 0 ? styles.tableRowEven : styles.tableRowOdd}
+                      key={item.key}>
+                        <View style={styles.rowItem}>
+                          <Text>{item.name}</Text>
+                        </View>
+                        <View style={styles.rowItem}>
+                          <Text>{item.startTime}</Text>
+                        </View>
+                        <View style={styles.rowItem}>
+                          <Text>{item.endTime}</Text>
+                        </View>
+                        <View style={styles.deleteItem}>
+                          <Button title='Delete'
+                          color='red'
+                          onPress={() => {
+                            Alert.alert(
+                              "Delete This Schedule?",
+                              "Are you sure you want to delete this schedule?",
+                              [
+                                {text: 'No'},
+                                {text: 'Yes', onPress: () => {
+                                  setTasks([]);
+                                  setTasks(deleteTask(item.key, tasks));
+                                }}
+                              ]
+                            )
+                          }}/>
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  })
+                }
+              </View>
+            </ScrollView>
+        </>
+        );
+      }
+      // No goals are present
+      else {
+        return(
+          <>
+            <ScrollView style={styles.tableContainer}>
+              <View style={styles.sectionTable}>
+                <View style={styles.tableRowEmpty}>
+                  <Text>No Tasks to Display</Text>
+                </View>
+              </View>
+            </ScrollView>
+          </>
+        );
+      }
+}
+
+/**
+ * Checks the current schedule to see if it is valid.
+ * @param name: The name of the schedule 
+ * @param days: The days the schedule applies to
+ * @param tasks: The current tasks in the schedule
+ * @returns true if the schedule is valid, false otherwise 
+ */
+function validSchedule(name, days, tasks) {
+  // Schedule name cannot be blank
+  if(name === "") {
+    return false;
+  }
+  if(tasks.length === 0) {
+    return false;
+  }
+
+  for(let i = 0; i < days.length; i ++) {
+    // A day is selected
+    if(days[i] === true) {
+      return true
+    }
+  }
+
+  // No days selected
+  return false;
 }

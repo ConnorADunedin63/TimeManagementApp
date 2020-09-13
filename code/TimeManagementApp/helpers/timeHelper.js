@@ -18,6 +18,9 @@ export function convertTo12HourFormat(date) {
       hours = hours - 12;
       pm = true;
     }
+    else if(hours === 12) {
+      pm = true;
+    }
 
     // Should translate 0 to 12
     if(hours == 0) {
@@ -45,6 +48,33 @@ export function convertTo12HourFormat(date) {
   else {
     return 'N/A';
   }
+}
+
+/**
+ * Gets the 24 hour time of the given date
+ * @param date: The date we wish to get the time of
+ * @return 24 hour time as a string in the format hh:mm 
+ */
+export function get24HourTime(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let time = "";
+
+  if(hours < 10) {
+    time += "0" + hours;
+  }
+  else {
+    time += hours;
+  }
+
+  if(minutes < 10) {
+    time += ":0" + minutes; 
+  }
+  else {
+    time += ":" + minutes;
+  }
+
+  return time;
 }
 
 /**
@@ -230,4 +260,37 @@ export function getOngoingGoals(goals) {
   });
 
   return ongoingGoals;
+}
+
+/**
+ * Compares two time strings in 24 hour format and returns a integer value representing which time is greater
+ * @param time1: The first time
+ * @param time2: The second time 
+ * @returns -1 if time1 is greater than time2, 0 if time1 and time2 are the same and 1 if time2 is greater than time1
+ */
+export function compareTimes(time1, time2) {
+  let hours1 = parseInt(time1.split(":")[0]);
+  let hours2 = parseInt(time2.split(":")[0]);
+  
+  if(hours1 < hours2) {
+    return 1;
+  }
+  else if(hours1 > hours2) {
+    return -1;
+  }
+  else {
+    let minutes1 = parseInt(time1.split(":")[1]);
+    let minutes2 = parseInt(time2.split(":")[1]);
+
+    if(minutes1 < minutes2) {
+      return 1;
+    }
+    else if(minutes1 > minutes2) {
+      return -1;
+    }
+    else {
+      return 0;
+    }
+  }
+
 }

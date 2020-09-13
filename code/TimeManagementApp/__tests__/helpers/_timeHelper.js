@@ -1,4 +1,4 @@
-import { convertTo12HourFormat, formatDate, getLongTermGoals, getShortTermGoals, getOngoingGoals } from '../../helpers/timeHelper.js'
+import { convertTo12HourFormat, get24HourTime, formatDate, getLongTermGoals, getShortTermGoals, getOngoingGoals, compareTimes } from '../../helpers/timeHelper.js'
 /**
   Tests for checking date formatting functions
 */
@@ -23,6 +23,11 @@ describe("12 hour format", () => {
     expect(convertTo12HourFormat(date)).toBe("12:10AM");
   });
 
+  it("should be returned for 12PM", () => {
+    const date = new Date("2016-05-13 12:10");
+    expect(convertTo12HourFormat(date)).toBe("12:10PM");
+  });
+
   it("should return \"N/A\" when passed something that is not a Date object", () => {
     expect(convertTo12HourFormat("This is not a date")).toBe("N/A");
   });
@@ -30,6 +35,18 @@ describe("12 hour format", () => {
   it("should return \"N/A\" when passed null", () => {
     expect(convertTo12HourFormat(null)).toBe("N/A");
   });
+});
+
+describe("24 hour format should", () => {
+  it("return the correct 24 hour time when date has a time in the am.", () => {
+    const date = new Date("2011-01-01 09:17");
+    expect(get24HourTime(date)).toBe("09:17");
+  });
+
+  it("return the correct 24 hour time when date has a time in the pm.", () => {
+    const date = new Date("2011-01-01 15:07");
+    expect(get24HourTime(date)).toBe("15:07");
+  })
 });
 
 describe("date format", () => {
@@ -328,5 +345,32 @@ describe("ongoing goals filter", () => {
     ];
 
     expect(getOngoingGoals(goals).length).toBe(2);
+  });
+});
+
+describe("compareTimes function should", () => {
+  it("correctly return the correct integer when both times have different hours.", () => {
+    let time1 = "01:13";
+    let time2 = "13:13";
+    expect(compareTimes(time1, time2)).toBe(1);
+
+    time1 = "12:21";
+    time2 = "09:10";
+    expect(compareTimes(time1, time2)).toBe(-1);
+  });
+
+  it("correctly return the correct integer when both time have the same hours but different minutes.", () => {
+    let time1 = "09:01";
+    let time2 = "09:30";
+    expect(compareTimes(time1, time2)).toBe(1)
+
+    time1 = "13:13";
+    time2 = "13:05";
+    expect(compareTimes(time1, time2)).toBe(-1);
+  });
+
+  it("correctly return the correct integer when both times are the same.", () => {
+    let time1 = "08:25";
+    expect(compareTimes(time1, time1)).toBe(0);
   });
 });

@@ -23,7 +23,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import {convertTo12HourFormat} from '../../helpers/timeHelper.js';
+import {convertTo12HourFormat, get24HourTime, getCompleteDate, compareTimes} from '../../helpers/timeHelper.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -33,10 +33,8 @@ import styles from '../css/createScheduleTasksStyles.js';
 export default function CreateScheduleTask({ route, navigation }) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [startTime, setStartTime] = useState(route.params.time);
+    const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(startTime);
-    // The current tasks in this schedule
-    const [tasks, setTasks] = useState([]);
 
     return (
         <View style={styles.bodyContainer}>
@@ -63,7 +61,7 @@ export default function CreateScheduleTask({ route, navigation }) {
                         <TextInput 
                         style={styles.formTimeInput}
                         editable={false} 
-                        defaultValue={startTime}/>
+                        defaultValue={convertTo12HourFormat(startTime)}/>
                     </View>
                     {timePicker(startTime, setStartTime)}
                     <View style={{ alignItems: 'stretch' }}>
@@ -71,7 +69,7 @@ export default function CreateScheduleTask({ route, navigation }) {
                         <TextInput 
                         style={styles.formTimeInput}
                         editable={false} 
-                        defaultValue={endTime}/>
+                        defaultValue={convertTo12HourFormat(endTime)}/>
                     </View>
                     {timePicker(endTime, setEndTime)}
                     <View style={{alignItems: 'stretch', marginTop: 20}}>
@@ -79,7 +77,19 @@ export default function CreateScheduleTask({ route, navigation }) {
                         title="Create Schedule Task"
                         disabled={name === "" ? true : false}
                         onPress={() => {
-                            navigation.goBack();
+                            // Check for valid time
+                            if(compareTimes(get24HourTime(startTime), get24HourTime(endTime)) === -1) {
+                                alert("Start time cannot be before end time!");
+                                return;
+                            }
+
+                            let newTask = {
+                                name: name,
+                                description: description,
+                                startTime: get24HourTime(startTime),
+                                endTime: get24HourTime(endTime)
+                            }
+                            navigation.navigate("CreateSchedule", {newTask: JSON.stringify(newTask)});
                         }}
                         />
                     </View>
@@ -95,7 +105,12 @@ function timePicker(time, setTime) {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setShow(Platform.OS === 'ios');
-        setTime(convertTo12HourFormat(selectedDate));
+        if(selectedDate instanceof Date) {
+            setTime(selectedDate);
+        }
+        else {
+            setTime(new Date());
+        }
     };
 
     const showMode = currentMode => {
@@ -118,7 +133,7 @@ function timePicker(time, setTime) {
                 <DateTimePicker
                 testID="timePicker"
                 timeZoneOffsetInMinutes={0}
-                value={new Date()}
+                value={time}
                 mode={mode}
                 is24Hour={true}
                 display="default"
