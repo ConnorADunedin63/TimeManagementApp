@@ -21,7 +21,6 @@ import styles from '../css/createScheduleStyles.js';
 import { isWeekdays, isWeekends, isEveryday } from '../../helpers/scheduleHelper.js';
 import { setSchedules, getSchedules } from '../../logic/schedules.js';
 import { addScheduleTask, deleteTask } from '../../logic/scheduleTasks.js';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export default function CreateSchedule({route, navigation}) {
     const [name, setName] = useState("");
@@ -309,7 +308,7 @@ function scheduleTaskTable(tasks, setTasks) {
 }
 
 /**
- * 
+ * Checks the current schedule to see if it is valid.
  * @param name: The name of the schedule 
  * @param days: The days the schedule applies to
  * @param tasks: The current tasks in the schedule

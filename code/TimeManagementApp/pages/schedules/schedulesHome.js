@@ -72,7 +72,7 @@ function schedulesTable(navigation) {
       setSchedules(currentSchedules);
     }
 
-    setSchedulesState()
+    setSchedulesState();
   }, [schedules]);
 
   // This is a temporary loading screen while the goals are loaded from asynchronous storage
